@@ -10,50 +10,42 @@
         :root { --hot-pink: #ff4d6d; --soft-pink: #fff0f3; }
         body { margin: 0; background: #fdf2f4; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #ffafbd, #ffc3a0); text-align: center; }
         .main-title { font-family: 'Fredoka One'; font-size: 3.5rem; color: white; text-shadow: 3px 3px var(--hot-pink); }
         
-        /* --- DASHBOARD --- */
         #main-dashboard { display: none; padding: 20px; }
         .section-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 30px; position: sticky; top: 10px; z-index: 100; }
-        .nav-btn { background: white; border: 2px solid var(--hot-pink); padding: 12px; border-radius: 15px; cursor: pointer; font-weight: 600; color: var(--hot-pink); transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .nav-btn { background: white; border: 2px solid var(--hot-pink); padding: 12px; border-radius: 15px; cursor: pointer; font-weight: 600; color: var(--hot-pink); transition: 0.3s; }
         .nav-btn.active { background: var(--hot-pink); color: white; }
 
-        /* --- SECTIONS --- */
         .content-section { display: none; animation: fadeIn 0.5s; }
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- PHOTO GALLERY --- */
         .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; padding: 20px; }
-        .polaroid { background: white; padding: 15px 15px 45px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: rotate(var(--r)); transition: 0.4s; position: relative; }
-        .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 10; box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
-        .polaroid img { width: 100%; height: 260px; object-fit: cover; border: 1px solid #f9f9f9; }
-        .polaroid p { font-family: 'Dancing Script'; font-size: 1.4rem; text-align: center; margin: 15px 0 0 0; color: #333; }
+        .polaroid { background: white; padding: 15px 15px 45px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: rotate(var(--r)); transition: 0.4s; }
+        .polaroid img { width: 100%; height: 260px; object-fit: cover; }
+        .polaroid p { font-family: 'Dancing Script'; font-size: 1.4rem; text-align: center; margin: 15px 0 0 0; }
 
-        /* --- LOCK OVERLAY --- */
-        .private-lock { text-align: center; padding: 80px 20px; background: rgba(255,255,255,0.7); border-radius: 30px; margin: 20px; border: 3px dashed var(--hot-pink); }
-        .private-lock h2 { font-family: 'Fredoka One'; color: var(--hot-pink); }
-
-        /* --- WISH WALL --- */
+        .lock-screen { text-align: center; padding: 60px 20px; background: white; border-radius: 30px; margin: 20px; border: 3px dashed var(--hot-pink); }
+        .pw-input { padding: 10px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 10px; width: 200px; text-align: center; }
+        
         .wish-container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); text-align: center; }
-        .wish-container input, .wish-container textarea { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 12px; font-family: 'Poppins'; box-sizing: border-box; background: #fafafa; }
-        .send-btn { background: var(--hot-pink); color: white; border: none; padding: 18px; border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; margin-top: 10px; transition: 0.3s; }
-        .send-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
+        .wish-container input, .wish-container textarea { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 12px; font-family: 'Poppins'; box-sizing: border-box; }
+        .send-btn { background: var(--hot-pink); color: white; border: none; padding: 15px; border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; }
 
-        #admin-link { position: fixed; top: 15px; left: 15px; z-index: 1000; cursor: pointer; font-size: 2.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        #admin-icon { position: fixed; top: 15px; left: 15px; z-index: 1000; cursor: pointer; font-size: 2rem; opacity: 0.3; }
     </style>
 </head>
 <body>
 
-    <div id="admin-link" onclick="askAdmin()">🦄</div>
+    <div id="admin-icon" onclick="checkAdmin()">🦄</div>
     <audio id="bg-music" loop src="bday-music.mp3"></audio>
 
     <div class="hero" id="hero">
-        <div style="font-size: 120px; cursor: pointer; animation: pulse 2s infinite;" onclick="enterSite()">🎁</div>
+        <div style="font-size: 100px; cursor: pointer;" onclick="enterSite()">🎁</div>
         <h1 class="main-title">NYRA'S WORLD</h1>
-        <p style="color: white; font-weight: bold; background: var(--hot-pink); padding: 10px 30px; border-radius: 50px; cursor: pointer;" onclick="enterSite()">OPEN GIFT</p>
+        <p style="color: white; font-weight: bold;">TAP GIFT TO ENTER</p>
     </div>
 
     <div id="main-dashboard">
@@ -64,59 +56,55 @@
             <button class="nav-btn" onclick="showTab('guests')">Guests 🎁</button>
         </div>
 
-        <div id="nyra" class="content-section private">
-            <div class="private-lock">
-                <h2>🔒 Private Gallery</h2>
-                <p>This milestone collection is for family only.</p>
+        <div id="nyra" class="content-section active">
+            <div id="lock-nyra" class="lock-screen">
+                <h2>🔒 Nyra's Gallery</h2>
+                <input type="password" id="pass-nyra" class="pw-input" placeholder="Enter Password"><br>
+                <button class="send-btn" style="width: auto;" onclick="unlockSection('nyra', '270125')">Unlock</button>
             </div>
-            <div class="photo-grid" id="nyra-photos" style="display:none;"></div>
+            <div id="grid-nyra" class="photo-grid" style="display:none;"></div>
         </div>
 
-        <div id="parents" class="content-section private">
-            <div class="private-lock">
-                <h2>🔒 Private Gallery</h2>
-                <p>Mommy & Daddy's special moments with Nyra.</p>
+        <div id="parents" class="content-section">
+            <div id="lock-parents" class="lock-screen">
+                <h2>🔒 Parents Gallery</h2>
+                <input type="password" id="pass-parents" class="pw-input" placeholder="Enter Password"><br>
+                <button class="send-btn" style="width: auto;" onclick="unlockSection('parents', 'love')">Unlock</button>
             </div>
-            <div class="photo-grid" id="parent-photos" style="display:none;"></div>
+            <div id="grid-parents" class="photo-grid" style="display:none;"></div>
         </div>
 
-        <div id="family" class="content-section private">
-            <div class="private-lock">
-                <h2>🔒 Private Gallery</h2>
-                <p>Sweet memories with our loved ones.</p>
+        <div id="family" class="content-section">
+            <div id="lock-family" class="lock-screen">
+                <h2>🔒 Family Gallery</h2>
+                <input type="password" id="pass-family" class="pw-input" placeholder="Enter Password"><br>
+                <button class="send-btn" style="width: auto;" onclick="unlockSection('family', 'family123')">Unlock</button>
             </div>
-            <div class="photo-grid" id="family-photos" style="display:none;"></div>
+            <div id="grid-family" class="photo-grid" style="display:none;"></div>
         </div>
 
         <div id="guests" class="content-section">
             <h2 style="text-align:center; color: var(--hot-pink); font-family: 'Fredoka One';">Guest Gallery</h2>
-            <div class="photo-grid" id="guest-photos"></div>
-
-            <hr style="border: 0; height: 1px; background: #eee; margin: 50px 0;">
-
+            <div class="photo-grid" id="grid-guests"></div>
             <div class="wish-container">
-                <h2 style="font-family: 'Fredoka One'; color: var(--hot-pink);">Leave a Wish</h2>
+                <h3>Leave a Private Wish</h3>
                 <input type="text" id="guestName" placeholder="Your Name">
-                <textarea id="guestMsg" rows="4" placeholder="Write a birthday wish for Nyra..."></textarea>
-                <button class="send-btn" onclick="saveWish()">🌟 SEND SPARKLE WISH</button>
-                <p style="font-size: 0.85rem; color: #888; margin-top: 15px;">Your wishes are private and sent directly to Nyra's parents.</p>
+                <textarea id="guestMsg" rows="4" placeholder="Your message..."></textarea>
+                <button class="send-btn" onclick="saveWish()">🌟 SEND WISH</button>
             </div>
-            
-            <div id="admin-wishes" style="display:none; margin-top: 60px;">
-                <h2 style="text-align:center; color: var(--hot-pink); font-family: 'Fredoka One';">Private Messages for Nyra</h2>
+            <div id="admin-wishes" style="display:none; margin-top: 50px;">
+                <h2 style="text-align:center; color: var(--hot-pink);">Parent's View: Guest Wishes</h2>
                 <div id="wishes-list" class="photo-grid"></div>
             </div>
         </div>
     </div>
 
     <script>
-        let isAdmin = false;
-
         function enterSite() {
             document.getElementById('hero').style.display = 'none';
             document.getElementById('main-dashboard').style.display = 'block';
             document.getElementById('bg-music').play().catch(()=>{});
-            generateGalleries();
+            generateAllGrids();
         }
 
         function showTab(tabId) {
@@ -124,53 +112,43 @@
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
-            window.scrollTo(0,0);
         }
 
-        function askAdmin() {
-            let code = prompt("Enter Parent Access Code:");
-            if(code === "1234") {
-                isAdmin = true;
-                unlockEverything();
-                confetti({particleCount: 150, spread: 70});
+        function unlockSection(section, correctPass) {
+            const input = document.getElementById('pass-' + section).value;
+            if(input === correctPass) {
+                document.getElementById('lock-' + section).style.display = 'none';
+                document.getElementById('grid-' + section).style.display = 'grid';
+                confetti({particleCount: 50});
             } else {
-                alert("Incorrect code! Try again. 😊");
+                alert("Wrong password! ❌");
             }
         }
 
-        function unlockEverything() {
-            // Hide locks and show private grids
-            document.querySelectorAll('.private-lock').forEach(l => l.style.display = 'none');
-            document.getElementById('nyra-photos').style.display = 'grid';
-            document.getElementById('parent-photos').style.display = 'grid';
-            document.getElementById('family-photos').style.display = 'grid';
-            
-            // Show wishes list
-            document.getElementById('admin-wishes').style.display = 'block';
-            displayWishes();
+        function checkAdmin() {
+            let code = prompt("Enter Admin Code to see Guest Wishes:");
+            if(code === "nyra") {
+                document.getElementById('admin-wishes').style.display = 'block';
+                displayWishes();
+                alert("Wishes Unlocked!");
+            }
         }
 
-        function generateGalleries() {
-            const createGrid = (containerId, prefix, count, label) => {
-                let html = '';
+        function generateAllGrids() {
+            const fill = (id, prefix, count, label) => {
+                let h = '';
                 for(let i=1; i<=count; i++) {
-                    let rot = (Math.random() * 8 - 4) + 'deg';
-                    html += `
-                        <div class="polaroid" style="--r: ${rot}">
-                            <img src="${prefix}${i}.jpg" onerror="this.src='https://via.placeholder.com/300x300?text=Photo+${i}'">
-                            <p>${label} #${i}</p>
-                        </div>`;
+                    h += `<div class="polaroid" style="--r:${(Math.random()*6-3)}deg">
+                            <img src="${prefix}${i}.jpg" onerror="this.src='https://via.placeholder.com/300?text=Photo+${i}'">
+                            <p>${label} ${i}</p>
+                          </div>`;
                 }
-                document.getElementById(containerId).innerHTML = html;
+                document.getElementById('grid-' + id).innerHTML = h;
             };
-
-            // Section 1-3: 25 Photos each
-            createGrid('nyra-photos', 'nyra', 25, 'Nyra Milestone');
-            createGrid('parent-photos', 'parent', 25, 'Mommy & Daddy');
-            createGrid('family-photos', 'family', 25, 'Family Moment');
-            
-            // Section 4: 20 Photos
-            createGrid('guest-photos', 'guest', 20, 'Guest Highlight');
+            fill('nyra', 'nyra', 25, 'Nyra');
+            fill('parents', 'parent', 25, 'Parents');
+            fill('family', 'family', 25, 'Family');
+            fill('guests', 'guest', 20, 'Guest');
         }
 
         function saveWish() {
@@ -180,30 +158,18 @@
                 let wishes = JSON.parse(localStorage.getItem('nyra_wishes') || '[]');
                 wishes.push({name, msg, date: new Date().toLocaleDateString()});
                 localStorage.setItem('nyra_wishes', JSON.stringify(wishes));
-                
+                alert("Wish sent privately!");
                 document.getElementById('guestName').value = '';
                 document.getElementById('guestMsg').value = '';
-                
-                confetti({particleCount: 100, origin: {y: 0.8}});
-                alert("✨ Wish sent! Only Nyra's parents can see it.");
-                if(isAdmin) displayWishes();
-            } else {
-                alert("Please add your name and a wish! 💖");
             }
         }
 
         function displayWishes() {
             let wishes = JSON.parse(localStorage.getItem('nyra_wishes') || '[]');
-            const list = document.getElementById('wishes-list');
-            if(wishes.length === 0) {
-                list.innerHTML = "<p style='text-align:center; grid-column: 1/-1;'>No wishes yet.</p>";
-                return;
-            }
-            list.innerHTML = wishes.map(w => `
-                <div class="polaroid" style="--r: 0deg; border-bottom: 5px solid var(--hot-pink);">
-                    <p style="font-size: 1.1rem; text-align: left;"><b>From: ${w.name}</b></p>
-                    <p style="font-family: sans-serif; font-size: 0.95rem; text-align: left; color: #444; line-height: 1.4;">"${w.msg}"</p>
-                    <small style="color:#aaa; display:block; margin-top:10px;">${w.date}</small>
+            document.getElementById('wishes-list').innerHTML = wishes.map(w => `
+                <div class="polaroid" style="--r:0deg; border-left: 5px solid var(--hot-pink);">
+                    <p style="text-align:left; font-size:1.1rem;"><b>${w.name}</b></p>
+                    <p style="text-align:left; font-family:sans-serif; font-size:0.9rem;">${w.msg}</p>
                 </div>
             `).join('');
         }
