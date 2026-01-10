@@ -3,185 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nyra's 1st Birthday Wonderland 🦄</title>
+    <title>Nyra's 1st Birthday 🎀</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent-purple: #a29bfe;
-            --accent-peach: #fab1a0;
-            --soft-white: #ffffff;
-            --text-dark: #2d3436;
+            --pink-hot: #ff4d6d;
+            --pink-soft: #ff8fa3;
+            --pink-bg: #fff0f3;
+            --text-dark: #594e52;
         }
 
         body {
             margin: 0; padding: 0;
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); /* Lavender to Sky Blue Gradient */
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
             color: var(--text-dark);
+            scroll-behavior: smooth;
         }
 
-        /* --- GIANT FLOATING CARTOONS --- */
+        /* Floating Decorations */
         .cartoon-giant {
             position: fixed; pointer-events: none; z-index: 1;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
-            animation: giantFloat 12s infinite ease-in-out;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+            animation: giantFloat 10s infinite ease-in-out;
+            font-size: 60px;
         }
+        @media (min-width: 768px) { .cartoon-giant { font-size: 120px; } }
 
         @keyframes giantFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            50% { transform: translate(40px, -60px) rotate(15deg) scale(1.1); }
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(20px, -30px) rotate(10deg); }
         }
 
-        /* Sparkle Trail */
-        .sparkle {
-            position: fixed; pointer-events: none;
-            background: gold; width: 6px; height: 6px;
-            border-radius: 50%; z-index: 9999;
-            box-shadow: 0 0 10px white;
-            animation: sparkleAnim 0.8s linear forwards;
-        }
-        @keyframes sparkleAnim {
-            to { transform: translateY(80px) scale(0); opacity: 0; }
-        }
-
-        /* Hero Section */
         .hero {
             height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; position: relative; z-index: 10;
+            justify-content: center; align-items: center; text-align: center;
         }
 
-        .gift-box {
-            font-size: 160px; cursor: pointer;
-            transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-        .gift-box:hover { transform: scale(1.2) rotate(-10deg); }
+        .gift-box { font-size: 100px; cursor: pointer; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
         .main-title {
             font-family: 'Fredoka One', cursive;
-            font-size: 5rem; color: white;
-            text-shadow: 4px 4px 0px var(--accent-purple);
-            margin: 20px 0;
+            font-size: clamp(2rem, 10vw, 4rem); color: white;
+            text-shadow: 3px 3px 0px var(--pink-hot);
         }
 
-        /* Memory Cards */
-        #story-feed { display: none; padding: 100px 20px; position: relative; z-index: 5; }
+        /* --- GRID SYSTEM --- */
+        #story-feed { display: none; padding: 20px; z-index: 5; position: relative; }
         
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 50px; max-width: 1300px; margin: 0 auto;
+            /* Force 1 column on Mobile */
+            grid-template-columns: 1fr; 
+            gap: 25px; 
+            max-width: 1000px; 
+            margin: 0 auto;
+        }
+
+        /* Switch to multi-column on Desktop/Laptop */
+        @media (min-width: 768px) {
+            .memory-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
         }
 
         .polaroid {
-            background: white; padding: 20px 20px 60px 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transform: rotate(calc(-2deg + Math.random() * 4deg));
-            transition: 0.4s; cursor: pointer;
-            border-radius: 5px;
+            perspective: 1000px;
+            height: 380px; /* Comfortable height for 1 column */
+            cursor: pointer;
         }
-        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 20; }
 
-        .polaroid img, .coming-soon {
-            width: 100%; height: 300px; object-fit: cover;
-            border: 1px solid #eee;
+        .card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
         }
+
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            display: flex; flex-direction: column;
+            padding: 15px; box-sizing: border-box;
+            border: 5px solid white;
+        }
+
+        .card-front { background: white; }
+        .card-front img { width: 100%; height: 80%; object-fit: cover; border-radius: 8px; }
 
         .coming-soon {
-            background: #fdf2f2; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; border: 3px dashed var(--accent-purple);
+            width: 100%; height: 80%; background: var(--pink-bg);
+            display: flex; justify-content: center; align-items: center;
+            border: 2px dashed var(--pink-hot); border-radius: 8px;
         }
 
         .card-back {
-            background: var(--accent-purple); color: white;
-            padding: 30px; text-align: center; border-radius: 15px;
-            font-family: 'Dancing Script', cursive; font-size: 1.8rem;
+            background: var(--pink-hot); color: white;
+            transform: rotateY(180deg);
+            justify-content: center; align-items: center; text-align: center;
+            font-family: 'Dancing Script', cursive; font-size: 1.6rem;
+            padding: 20px;
         }
 
-        /* Cake Smash Area */
+        .card-label {
+            font-family: 'Dancing Script'; font-size: 1.4rem;
+            margin-top: 10px; text-align: center; font-weight: bold;
+        }
+
         .cake-zone {
-            background: rgba(255,255,255,0.9); padding: 100px 20px;
-            margin-top: 100px; border-radius: 100px 100px 0 0;
-            text-align: center;
+            background: white; padding: 50px 20px; margin-top: 50px;
+            border-radius: 40px; text-align: center; border: 4px solid var(--pink-soft);
         }
 
         #music-btn {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 70px; height: 70px; border-radius: 50%;
-            background: var(--accent-peach); border: 4px solid white;
-            font-size: 30px; cursor: pointer; z-index: 1000; display: none;
+            position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--pink-hot); color: white;
+            border: 3px solid white; font-size: 25px; z-index: 1000; display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="cartoon-giant" style="top:5%; left:5%; font-size: 180px;">🦄</div>
-    <div class="cartoon-giant" style="top:60%; right:5%; font-size: 150px; animation-delay: 2s;">🧚‍♀️</div>
-    <div class="cartoon-giant" style="top:30%; right:10%; font-size: 120px; animation-delay: 4s;">🎈</div>
-    <div class="cartoon-giant" style="bottom:5%; left:10%; font-size: 140px; animation-delay: 1s;">🧸</div>
-    <div class="cartoon-giant" style="top:10%; right:30%; font-size: 100px; animation-delay: 5s;">👑</div>
+    <div class="cartoon-giant" style="top:5%; left:5%;">🎀</div>
+    <div class="cartoon-giant" style="top:40%; right:2%;">🎈</div>
+    <div class="cartoon-giant" style="bottom:10%; left:2%;">🦄</div>
 
     <button id="music-btn" onclick="toggleMusic()">🎵</button>
     <audio id="bg-music" loop src="bday-music.mp3"></audio>
 
     <div class="hero" id="hero">
-        <div class="gift-box" onclick="unlockWonderland()">🎁</div>
-        <h1 class="main-title">NYRA'S WORLD</h1>
-        <p style="font-weight: bold; color: white; background: var(--accent-purple); padding: 10px 20px; border-radius: 50px;">TAP THE GIFT TO ENTER</p>
+        <div class="gift-box" onclick="unlock()">🎁</div>
+        <h1 class="main-title">NYRA IS 1!</h1>
+        <p style="color: white; background: var(--pink-hot); padding: 10px 30px; border-radius: 30px; cursor:pointer;" onclick="unlock()">OPEN NYRA'S GIFT</p>
     </div>
 
     <div id="story-feed">
-        <h1 class="main-title" style="font-size: 3.5rem; text-align: center;">Our Precious First Year</h1>
+        <h1 class="main-title" style="font-size: 2.2rem; text-align: center; margin-bottom: 30px;">A Year of Sweet Memories</h1>
         <div class="memory-grid" id="grid"></div>
 
         <div class="cake-zone">
-            <h2 style="font-family: 'Fredoka One'; font-size: 3rem; color: var(--accent-purple);">Wish Nyra a Happy Birthday!</h2>
-            <div style="font-size: 150px; cursor: pointer;" onclick="bigBlast()">🎂</div>
-            <p>Click the cake for a Magical Surprise!</p>
+            <h2 style="font-family: 'Fredoka One'; color: var(--pink-hot);">BIRTHDAY CAKE SMASH!</h2>
+            <div id="cake-display" style="font-size: 100px; cursor: pointer;" onclick="smash()">🎂</div>
+            <p id="cake-status">Tap to smash the cake!</p>
         </div>
     </div>
 
     <script>
         const memories = [
-            {t: "The Beginning", m: "The day you were born, the stars aligned for us."},
-            {t: "Tiny Hands", m: "You held our world in your little fingers."},
-            {t: "Coming Home", m: "The house finally felt warm and full of light."},
-            {t: "Month 1", m: "Thirty days of falling deeper in love with you."},
-            {t: "First Smile", m: "The sun came out every time you beamed at us."},
-            {t: "Sweet Dreams", m: "Watching you sleep is the peace we always wanted."},
-            {t: "First Giggle", m: "Your laugh is the melody of our household."},
-            {t: "Bath Fun", m: "Little splashes, big memories!"},
-            {t: "First Tooth", m: "One tiny white tooth, a million more smiles to go."},
-            {t: "Rolling Over", m: "You keep us on our toes, little explorer!"},
-            {t: "Crawl Master", m: "And suddenly, you were chasing every dream."},
-            {t: "Peek-a-Boo", m: "Your favorite game, our favorite sight."},
-            {t: "Food Explorer", m: "Messy faces make for the best photos."},
-            {t: "Standing Up", m: "The world looks different from up here, doesn't it?"},
-            {t: "First Word", m: "Whatever you said, we'll remember it forever."},
-            {t: "Mommy's Joy", m: "Her mini-me, her heart walking outside her body."},
-            {t: "Daddy's Pride", m: "His little girl, his forever princess."},
-            {t: "Grandma's Love", m: "Spoiled with hugs and infinite kisses."},
-            {t: "Park Days", m: "Touching the grass and feeling the wind."},
-            {t: "Cozy Days", m: "Snuggled up in love and warm blankets."},
-            {t: "First Holiday", m: "Magic through your innocent eyes."},
-            {t: "Smart Girl", m: "Learning the world one day at a time."},
-            {t: "Our Star", m: "You are the center of our universe."},
-            {t: "Little Artist", m: "Painting our lives with bright colors."},
-            {t: "The Big Day", m: "Today, we celebrate 365 days of YOU."},
-            {t: "Cake Smash", m: "Time to get messy and have some fun!"},
-            {t: "First Party", m: "Surrounded by everyone who loves you."},
-            {t: "To The Moon", m: "Our love for you has no boundaries."},
-            {t: "Birthday Queen", m: "One year old and already ruling our hearts."},
-            {t: "Happy Birthday", m: "Happy 1st Birthday, Nyra. We love you!"}
+            {t: "Arrival", m: "The day heaven sent us an angel. ✨"},
+            {t: "Tiny Hands", m: "Wrapped around our hearts. 💖"},
+            {t: "Home Bound", m: "Our home finally felt complete. 🏠"},
+            {t: "First Month", m: "Sweetest 30 days ever. 🌸"},
+            {t: "The Smile", m: "Brightening our lives daily. ☀️"},
+            {t: "Nap Time", m: "Watching our miracle sleep. 🌙"},
+            {t: "Giggles", m: "The best music in the world. 🎶"},
+            {t: "Bath Time", m: "Splashing through the year! 🛁"},
+            {t: "First Tooth", m: "A tiny white pearl for Nyra. 🦷"},
+            {t: "The Roll", m: "Our little explorer is moving! 🤸‍♀️"},
+            {t: "Crawling", m: "Chasing dreams on all fours. 👣"},
+            {t: "Peek-a-Boo", m: "Now you see me, now you don't! 👀"},
+            {t: "Yum Yum", m: "Messy faces are the cutest. 🍎"},
+            {t: "Standing", m: "Rising up to see the world! 🦒"},
+            {t: "First Word", m: "The sound of pure love. 🗣️"},
+            {t: "Mommy's Girl", m: "Two hearts beating as one. ❤️"},
+            {t: "Daddy's Girl", m: "Wrapped around his finger. 👑"},
+            {t: "Grandma's Pet", m: "Spoiled with hugs & kisses. 👵"},
+            {t: "Park Days", m: "Touching the grass & sky. 🌳"},
+            {t: "Snuggles", m: "Warm blankets and baby love. 🧸"},
+            {t: "First Holiday", m: "Everything is magic with you. 🎄"},
+            {t: "Smart Girl", m: "Learning something new daily. 🧠"},
+            {t: "Our Star", m: "The center of our universe. 🌌"},
+            {t: "Little Artist", m: "Coloring our lives pink. 🎨"},
+            {t: "The Big Day", m: "365 days of Nyra magic! 🎂"},
+            {t: "Cake Smash", m: "Ready for the big mess! 🧁"},
+            {t: "Party Time", m: "Celebrated by everyone. 🎈"},
+            {t: "Moon & Back", m: "Love you to infinity. 🚀"},
+            {t: "Queen Nyra", m: "Our little ruler's first year. 👸"},
+            {t: "Happy 1st!", m: "To the moon and back! ❤️"}
         ];
 
-        function unlockWonderland() {
+        function unlock() {
             document.getElementById('hero').style.display = 'none';
             document.getElementById('story-feed').style.display = 'block';
             document.getElementById('music-btn').style.display = 'block';
-            document.getElementById('bg-music').play();
+            document.getElementById('bg-music').play().catch(() => {});
 
             const grid = document.getElementById('grid');
             memories.forEach((item, i) => {
@@ -189,40 +198,35 @@
                 card.className = 'polaroid';
                 card.innerHTML = `
                     <div class="card-inner">
-                        <img src="pic${i+1}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="coming-soon" style="display:none;">
-                            <span style="font-size:50px;">🧚‍♀️</span>
-                            <p style="font-weight:bold; color:var(--accent-purple);">Coming Soon...</p>
+                        <div class="card-front">
+                            <img src="pic${i+1}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="coming-soon" style="display:none;"><span>💖</span></div>
+                            <div class="card-label">${item.t}</div>
                         </div>
-                        <h3 style="font-family: 'Dancing Script'; margin-top:15px; font-size:1.8rem;">${item.t}</h3>
-                    </div>
-                `;
+                        <div class="card-back">${item.m}</div>
+                    </div>`;
                 card.onclick = function() {
-                    const msg = this.querySelector('.card-inner');
-                    msg.innerHTML = `<div class="card-back">${item.m}</div>`;
-                    bigBlast();
+                    const inner = this.querySelector('.card-inner');
+                    const isFlipped = inner.style.transform === "rotateY(180deg)";
+                    inner.style.transform = isFlipped ? "rotateY(0deg)" : "rotateY(180deg)";
+                    if(!isFlipped) confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 }, colors: ['#ff4d6d'] });
                 };
                 grid.appendChild(card);
             });
-            bigBlast();
         }
 
-        function bigBlast() {
-            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#a29bfe', '#fab1a0', '#ffffff'] });
+        function smash() {
+            const cake = document.getElementById('cake-display');
+            cake.innerHTML = "💥🧁💥";
+            document.getElementById('cake-status').innerHTML = "NYRA SMASHED IT! 🥳";
+            confetti({ particleCount: 200, spread: 80, origin: { y: 0.8 } });
+            setTimeout(() => { cake.innerHTML = "😋🍴"; }, 3000);
         }
 
         function toggleMusic() {
             const m = document.getElementById('bg-music');
             m.paused ? m.play() : m.pause();
         }
-
-        document.addEventListener('mousemove', (e) => {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.left = e.pageX + 'px'; sparkle.style.top = e.pageY + 'px';
-            document.body.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 800);
-        });
     </script>
 </body>
 </html>
