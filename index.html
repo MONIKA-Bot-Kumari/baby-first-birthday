@@ -3,290 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nyra's 1st Birthday Wonderland 🦄</title>
+    <title>Nyra's Private Wonderland 🦄</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --hot-pink: #ff4d6d;
-            --bubble-pink: rgba(255, 192, 203, 0.6);
-            --soft-white: #fff5f7;
-        }
+        :root { --hot-pink: #ff4d6d; --soft-pink: #fff0f3; }
+        body { margin: 0; background: #fdf2f4; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        body {
-            margin: 0; padding: 0;
-            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden; color: #2d3436;
-        }
-
-        /* --- BACKGROUND DECOR --- */
-        .cartoon-giant {
-            position: fixed; pointer-events: none; z-index: 1;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
-            animation: giantFloat 12s infinite ease-in-out;
-            font-size: clamp(60px, 12vw, 120px);
-        }
-        @keyframes giantFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(30px, -40px) rotate(10deg); }
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-            position: relative; z-index: 10;
-        }
-        .gift-box { 
-            font-size: 130px; cursor: pointer; 
-            animation: pulse 2s infinite; 
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-        }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-
-        .main-title {
-            font-family: 'Fredoka One', cursive;
-            font-size: clamp(2.5rem, 8vw, 5rem); color: white;
-            text-shadow: 4px 4px 0px var(--hot-pink); margin: 20px 0;
-        }
-
-        /* --- STORY FEED --- */
-        #story-feed { display: none; padding: 40px 15px; position: relative; z-index: 5; }
-        .magic-controls { text-align: center; margin-bottom: 80px; }
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #ffafbd, #ffc3a0); text-align: center; }
+        .main-title { font-family: 'Fredoka One'; font-size: 3.5rem; color: white; text-shadow: 3px 3px var(--hot-pink); }
         
-        .magic-btn {
-            background: white; color: var(--hot-pink); border: 3px solid var(--hot-pink);
-            padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-family: 'Fredoka One'; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .magic-btn:hover { background: var(--hot-pink); color: white; transform: translateY(-3px); }
+        /* --- NAVIGATION DASHBOARD --- */
+        #main-dashboard { display: none; padding: 20px; }
+        .section-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .nav-btn { background: white; border: 2px solid var(--hot-pink); padding: 15px; border-radius: 15px; cursor: pointer; font-weight: 600; color: var(--hot-pink); transition: 0.3s; }
+        .nav-btn.active { background: var(--hot-pink); color: white; }
 
-        /* --- GALLERY GRID --- */
-        .memory-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 60px; max-width: 1200px; margin: 0 auto; padding: 20px;
-        }
-        .bubble-wrapper { perspective: 1000px; height: 400px; display: flex; justify-content: center; align-items: center; }
-        
-        .bubble {
-            width: 260px; height: 260px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), var(--bubble-pink));
-            border-radius: 50%; border: 2px solid rgba(255,255,255,0.5);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1), inset -10px -10px 20px rgba(255,255,255,0.5);
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; animation: float 6s infinite ease-in-out;
-        }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
+        /* --- SECTIONS --- */
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .polaroid {
-            display: none; background: white; padding: 15px 15px 45px 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-radius: 2px;
-            cursor: pointer; width: 280px; height: 350px;
-        }
-        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
-        .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; }
-        
-        .card-front img { width: 100%; height: 260px; object-fit: cover; border: 1px solid #f0f0f0; }
-        .placeholder-img { height: 260px; background: #fff0f3; display: flex; align-items: center; justify-content: center; flex-direction: column; border: 1px dashed var(--hot-pink); }
-        
-        .card-label { font-family: 'Dancing Script'; font-size: 1.6rem; text-align: center; margin-top: 15px; color: #444; }
-        .card-back {
-            background: var(--hot-pink); color: white; transform: rotateY(180deg);
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem; padding: 20px; border-radius: 5px;
-        }
+        /* --- PHOTO GRID --- */
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
+        .polaroid { background: white; padding: 15px 15px 40px 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transform: rotate(var(--r)); transition: 0.3s; }
+        .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
+        .polaroid img { width: 100%; height: 250px; object-fit: cover; border: 1px solid #eee; }
+        .polaroid p { font-family: 'Dancing Script'; font-size: 1.4rem; text-align: center; margin: 10px 0 0 0; }
 
-        /* --- CAKE & WISHES --- */
-        .cake-zone { padding: 80px 20px; text-align: center; background: white; border-radius: 80px 80px 0 0; margin-top: 50px; }
-        
-        .wish-wall { background: white; padding: 40px 20px; text-align: center; }
-        .wish-input-container { 
-            max-width: 500px; margin: 0 auto 40px auto; 
-            background: var(--soft-white); padding: 30px; border-radius: 30px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-        .wish-input-container input, .wish-input-container textarea {
-            width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Poppins'; box-sizing: border-box;
-        }
-        
-        .wishes-display { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px; }
-        .wish-card { 
-            background: #fff; padding: 20px; border-radius: 15px; width: 250px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--hot-pink); 
-            text-align: left; animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- PRIVATE TAG --- */
+        .private-lock { text-align: center; padding: 50px; background: #eee; border-radius: 20px; margin: 20px; border: 2px dashed #ccc; }
 
-        #music-btn {
-            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
-            border-radius: 50%; background: var(--hot-pink); color: white; border: 3px solid white;
-            font-size: 24px; cursor: pointer; z-index: 1000; display: none;
-        }
+        /* --- WISH WALL --- */
+        .wish-container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .wish-container input, .wish-container textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; }
+        .send-btn { background: var(--hot-pink); color: white; border: none; padding: 15px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; }
 
-        .pop-anim { animation: burst 0.4s forwards; }
-        @keyframes burst { 0% { transform: scale(1); } 100% { transform: scale(0); opacity: 0; } }
+        #admin-link { position: fixed; top: 10px; left: 10px; z-index: 1000; cursor: pointer; font-size: 2rem; }
     </style>
 </head>
 <body>
 
-    <div class="cartoon-giant" style="top:5%; left:5%;">🦄</div>
-    <div class="cartoon-giant" style="top:60%; right:5%; animation-delay: 2s;">🧚‍♀️</div>
-    <div class="cartoon-giant" style="top:30%; right:10%; animation-delay: 4s;">🎈</div>
-    <div class="cartoon-giant" style="bottom:10%; left:8%; animation-delay: 1s;">🧸</div>
-
-    <button id="music-btn" onclick="toggleMusic()">🎵</button>
+    <div id="admin-link" onclick="askAdmin()">🦄</div>
     <audio id="bg-music" loop src="bday-music.mp3"></audio>
 
     <div class="hero" id="hero">
-        <div class="gift-box" onclick="unlock()">🎁</div>
+        <div style="font-size: 100px; cursor: pointer;" onclick="enterSite()">🎁</div>
         <h1 class="main-title">NYRA'S WORLD</h1>
-        <button class="magic-btn" style="border:none; background:var(--hot-pink); color:white; font-size: 1.2rem;" onclick="unlock()">OPEN WONDERLAND</button>
+        <p style="color: white; font-weight: bold;">TAP THE GIFT TO ENTER</p>
     </div>
 
-    <div id="story-feed">
-        <div class="magic-controls">
-            <h1 class="main-title" style="font-size: 2.5rem; text-shadow: 2px 2px 0px var(--hot-pink);">Pop the Magic Bubbles 🫧</h1>
-            <button class="magic-btn" onclick="popAll()">✨ POP ALL MEMORIES</button>
-        </div>
-        
-        <div class="memory-grid" id="grid"></div>
-
-        <div class="cake-zone">
-            <h2 style="font-family: 'Fredoka One'; color: var(--hot-pink); font-size: 2.5rem;">The Big Cake Smash!</h2>
-            <div id="cake-display" style="font-size: 100px; cursor: pointer; margin: 20px 0;" onclick="smash()">🎂</div>
-            <p style="font-family: 'Dancing Script'; font-size: 1.5rem;">(Tap the cake to help Nyra smash it!)</p>
+    <div id="main-dashboard">
+        <div class="section-nav">
+            <button class="nav-btn active" onclick="showTab('nyra')">Nyra ✨</button>
+            <button class="nav-btn" onclick="showTab('parents')">Parents 👨‍👩‍👧</button>
+            <button class="nav-btn" onclick="showTab('family')">Family ❤️</button>
+            <button class="nav-btn" onclick="showTab('guests')">Guests 🎈</button>
         </div>
 
-        <div class="wish-wall">
-            <h2 class="main-title" style="color: var(--hot-pink); text-shadow: none; font-size: 2.5rem;">Nyra's Wish Wall ✨</h2>
-            <div class="wish-input-container">
-                <input type="text" id="wish-name" placeholder="Your Name">
-                <textarea id="wish-text" rows="3" placeholder="Write a beautiful wish for our princess..."></textarea>
-                <button class="magic-btn" onclick="saveWish()">🌟 SEND WISH</button>
+        <div id="nyra" class="content-section private">
+            <div class="private-lock">🔒 This section is for Parents' eyes only.</div>
+            <div class="photo-grid" id="nyra-photos"></div>
+        </div>
+
+        <div id="parents" class="content-section private">
+            <div class="private-lock">🔒 This section is for Parents' eyes only.</div>
+            <div class="photo-grid" id="parent-photos"></div>
+        </div>
+
+        <div id="family" class="content-section private">
+            <div class="private-lock">🔒 This section is for Parents' eyes only.</div>
+            <div class="photo-grid" id="family-photos"></div>
+        </div>
+
+        <div id="guests" class="content-section active">
+            <div class="wish-container">
+                <h3>Leave a Wish for Nyra</h3>
+                <input type="text" id="guestName" placeholder="Your Name">
+                <textarea id="guestMsg" rows="4" placeholder="Write something sweet..."></textarea>
+                <button class="send-btn" onclick="saveWish()">🌟 POST WISH</button>
+                <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Note: Your wish is private and will only be seen by Nyra's parents.</p>
             </div>
-            <div class="wishes-display" id="wishes-display"></div>
-            <div style="margin-top: 50px; opacity: 0.6; font-size: 0.9rem;">Made with ❤️ for Nyra's 1st Birthday</div>
+            
+            <div id="admin-wishes" style="display:none; margin-top: 40px;">
+                <h3 style="text-align:center; color: var(--hot-pink);">Private Guest Messages</h3>
+                <div id="wishes-list" class="photo-grid"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        const memories = [
-            {t: "Arrival", m: "The day heaven sent us an angel. ✨"},
-            {t: "Tiny Hands", m: "Wrapped around our hearts. 💖"},
-            {t: "Home Bound", m: "Our home finally felt complete. 🏠"},
-            {t: "First Smile", m: "Brightening every single day. ☀️"},
-            {t: "First Giggle", m: "The best music we've heard. 🎶"},
-            {t: "Bath Fun", m: "Splashing through life! 🛁"},
-            {t: "First Tooth", m: "A tiny pearl for a princess. 🦷"},
-            {t: "Crawling", m: "Chasing dreams on all fours. 👣"},
-            {t: "First Word", m: "Every sound you make is genius. 🗣️"},
-            {t: "1 Year Old", m: "365 days of true love. 🎂"},
-            {t: "Our Star", m: "Shining brighter than any star. 🌌"},
-            {t: "Happy 1st!", m: "To the moon and back, Nyra! ❤️"}
-        ];
+        let isAdmin = false;
 
-        function unlock() {
+        function enterSite() {
             document.getElementById('hero').style.display = 'none';
-            document.getElementById('story-feed').style.display = 'block';
-            document.getElementById('music-btn').style.display = 'block';
-            document.getElementById('bg-music').play().catch(() => {});
+            document.getElementById('main-dashboard').style.display = 'block';
+            document.getElementById('bg-music').play().catch(()=>{});
+            loadPhotos();
+        }
 
-            const grid = document.getElementById('grid');
-            grid.innerHTML = ''; // Clear existing
-            memories.forEach((item, i) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'bubble-wrapper';
-                wrapper.innerHTML = `
-                    <div class="bubble" onclick="pop(this)">
-                        <span style="font-size:50px;">🫧</span>
-                    </div>
-                    <div class="polaroid" onclick="flip(this)">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="pic${i+1}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div class="placeholder-img" style="display:none;">
-                                    <span style="font-size:40px;">💖</span>
-                                    <p style="font-size:0.8rem; color:var(--hot-pink);">Sweet Memory</p>
-                                </div>
-                                <div class="card-label">${item.t}</div>
-                            </div>
-                            <div class="card-back">${item.m}</div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(wrapper);
-            });
+        function showTab(tabId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function askAdmin() {
+            let code = prompt("Enter Parent Access Code:");
+            if(code === "1234") {
+                isAdmin = true;
+                unlockEverything();
+                alert("Welcome, Parents! All sections unlocked.");
+            } else {
+                alert("Incorrect code.");
+            }
+        }
+
+        function unlockEverything() {
+            document.querySelectorAll('.private-lock').forEach(l => l.style.display = 'none');
+            document.getElementById('admin-wishes').style.display = 'block';
             displayWishes();
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
 
-        function pop(el) {
-            el.classList.add('pop-anim');
-            const rect = el.getBoundingClientRect();
-            confetti({
-                particleCount: 30, 
-                origin: { x: (rect.left + rect.width/2) / window.innerWidth, y: (rect.top + rect.height/2) / window.innerHeight },
-                colors: ['#ff4d6d', '#ffffff']
-            });
-            setTimeout(() => {
-                el.style.display = 'none';
-                el.nextElementSibling.style.display = 'block';
-            }, 350);
-        }
+        function loadPhotos() {
+            // Helper to generate grid items
+            const createItem = (id, count, label) => {
+                let html = '';
+                for(let i=1; i<=count; i++) {
+                    let rot = (Math.random() * 6 - 3) + 'deg';
+                    html += `<div class="polaroid" style="--r: ${rot}">
+                                <img src="${id}${i}.jpg" onerror="this.src='https://via.placeholder.com/300x300?text=Photo+Coming'">
+                                <p>${label} #${i}</p>
+                             </div>`;
+                }
+                document.getElementById(id + '-photos').innerHTML = html;
+            };
 
-        function popAll() {
-            const bubbles = document.querySelectorAll('.bubble');
-            bubbles.forEach((b, index) => {
-                setTimeout(() => { if(b.style.display !== 'none') pop(b); }, index * 150);
-            });
-        }
-
-        function flip(el) {
-            const inner = el.querySelector('.card-inner');
-            const isFlipped = inner.style.transform === "rotateY(180deg)";
-            inner.style.transform = isFlipped ? "rotateY(0deg)" : "rotateY(180deg)";
-        }
-
-        function smash() {
-            const cake = document.getElementById('cake-display');
-            cake.innerHTML = "💥🧁💥";
-            confetti({ particleCount: 200, spread: 100, origin: { y: 0.8 } });
-            setTimeout(() => { cake.innerHTML = "😋🍴"; }, 2500);
+            createItem('nyra', 6, 'Nyra Milestone');
+            createItem('parent', 4, 'Mommy & Daddy');
+            createItem('family', 4, 'Family Love');
         }
 
         function saveWish() {
-            const name = document.getElementById('wish-name').value;
-            const text = document.getElementById('wish-text').value;
-            if (name && text) {
-                const wishes = JSON.parse(localStorage.getItem('nyraWishes') || '[]');
-                wishes.push({ name, text, date: new Date().toLocaleDateString() });
-                localStorage.setItem('nyraWishes', JSON.stringify(wishes));
-                document.getElementById('wish-name').value = '';
-                document.getElementById('wish-text').value = '';
-                displayWishes();
-                confetti({ particleCount: 50, colors: ['#ff4d6d', '#ffd700'] });
-            } else {
-                alert("Please add your name and a wish! ✨");
+            let name = document.getElementById('guestName').value;
+            let msg = document.getElementById('guestMsg').value;
+            if(name && msg) {
+                let wishes = JSON.parse(localStorage.getItem('nyra_wishes') || '[]');
+                wishes.push({name, msg, date: new Date().toLocaleDateString()});
+                localStorage.setItem('nyra_wishes', JSON.stringify(wishes));
+                document.getElementById('guestName').value = '';
+                document.getElementById('guestMsg').value = '';
+                confetti({particleCount: 100});
+                alert("Wish sent privately to Nyra's parents!");
             }
         }
 
         function displayWishes() {
-            const display = document.getElementById('wishes-display');
-            const wishes = JSON.parse(localStorage.getItem('nyraWishes') || '[]');
-            display.innerHTML = wishes.map(w => `
-                <div class="wish-card">
-                    <b>From: ${w.name}</b>
-                    <p>"${w.text}"</p>
-                    <small style="color:#aaa">${w.date}</small>
+            let wishes = JSON.parse(localStorage.getItem('nyra_wishes') || '[]');
+            document.getElementById('wishes-list').innerHTML = wishes.map(w => `
+                <div class="polaroid" style="--r: 0deg; background: #fff5f7;">
+                    <p style="font-size: 1.1rem;"><b>From: ${w.name}</b></p>
+                    <p style="font-family: sans-serif; font-size: 0.9rem; color: #444;">${w.msg}</p>
+                    <small>${w.date}</small>
                 </div>
             `).join('');
-        }
-
-        function toggleMusic() {
-            const m = document.getElementById('bg-music');
-            m.paused ? m.play() : m.pause();
         }
     </script>
 </body>
