@@ -38,8 +38,7 @@
             justify-content: center; align-items: center; text-align: center;
             position: relative; z-index: 10;
         }
-        .gift-box { font-size: 140px; cursor: pointer; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .gift-box:hover { transform: scale(1.2) rotate(-10deg); }
+        .gift-box { font-size: 140px; cursor: pointer; transition: 0.5s; }
 
         .main-title {
             font-family: 'Fredoka One', cursive;
@@ -51,26 +50,39 @@
         /* --- STORY FEED --- */
         #story-feed { display: none; padding: 40px 20px; position: relative; z-index: 5; }
         
-        .magic-controls { text-align: center; margin-bottom: 50px; }
+        .magic-controls { text-align: center; margin-bottom: 60px; }
         .magic-btn {
             background: white; color: var(--hot-pink); border: 3px solid var(--hot-pink);
             padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-family: 'Fredoka One'; letter-spacing: 1px; transition: 0.3s;
+            font-family: 'Fredoka One'; transition: 0.3s;
         }
-        .magic-btn:hover { background: var(--hot-pink); color: white; transform: scale(1.05); }
+        .magic-btn:hover { background: var(--hot-pink); color: white; }
 
+        /* --- GRID SYSTEM WITH ADDED ROW SPACE --- */
         .memory-grid {
-            display: grid; grid-template-columns: 1fr; gap: 50px;
-            max-width: 1200px; margin: 0 auto;
-        }
-        @media (min-width: 768px) {
-            .memory-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+            display: grid; 
+            grid-template-columns: 1fr; 
+            row-gap: 80px; /* BIG SPACE BETWEEN ROWS */
+            max-width: 1200px; 
+            margin: 0 auto;
         }
 
-        /* --- BUBBLE WRAPPER & PHYSICS --- */
+        @media (min-width: 768px) {
+            .memory-grid { 
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+                column-gap: 40px;
+                row-gap: 100px; /* Space between rows on desktop */
+            }
+        }
+
+        /* --- BUBBLE WRAPPER --- */
         .bubble-wrapper {
-            perspective: 1000px; height: 420px;
-            display: flex; justify-content: center; align-items: center;
+            perspective: 1000px; 
+            height: 420px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            margin-bottom: 20px; /* Extra breathing room */
         }
 
         .bubble {
@@ -79,9 +91,8 @@
             border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
             box-shadow: 0 20px 30px rgba(0,0,0,0.1), inset -15px -15px 30px rgba(255,255,255,0.6);
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer; position: relative; animation: float 5s infinite ease-in-out;
+            cursor: pointer; animation: float 5s infinite ease-in-out;
         }
-        .bubble::after { content: ''; position: absolute; top: 20%; left: 20%; width: 40px; height: 20px; background: white; border-radius: 50%; opacity: 0.5; transform: rotate(-45deg); }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
 
         /* --- POLAROID SCRAPBOOK CARD --- */
@@ -106,7 +117,7 @@
 
         /* --- CAKE SMASH --- */
         .cake-zone {
-            background: rgba(255,255,255,0.9); padding: 80px 20px; margin-top: 80px;
+            background: rgba(255,255,255,0.9); padding: 80px 20px; margin-top: 120px;
             border-radius: 80px 80px 0 0; text-align: center; border-top: 5px solid var(--hot-pink);
         }
 
@@ -203,7 +214,11 @@
                     <div class="polaroid" onclick="flip(this)">
                         <div class="card-inner">
                             <div class="card-front">
-                                <img src="pic${i+1}.jpg" onerror="this.src='https://via.placeholder.com/400x500?text=Nyra+Memory'">
+                                <img src="pic${i+1}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display:none; height:85%; background:#fff0f3; align-items:center; justify-content:center; flex-direction:column; border:1px dashed var(--hot-pink);">
+                                    <span style="font-size:40px;">💖</span>
+                                    <p style="font-size:0.8rem;">Photo Coming</p>
+                                </div>
                                 <div class="card-label">${item.t}</div>
                             </div>
                             <div class="card-back">${item.m}</div>
