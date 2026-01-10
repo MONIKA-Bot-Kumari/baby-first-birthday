@@ -9,7 +9,8 @@
     <style>
         :root {
             --hot-pink: #ff4d6d;
-            --bubble-pink: rgba(255, 192, 203, 0.5);
+            --bubble-pink: rgba(255, 192, 203, 0.6);
+            --soft-white: #fff5f7;
         }
 
         body {
@@ -20,16 +21,16 @@
             color: #2d3436;
         }
 
-        /* --- RESTORED GIANT CARTOONS --- */
+        /* --- BACKGROUND DECOR --- */
         .cartoon-giant {
             position: fixed; pointer-events: none; z-index: 1;
             filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
             animation: giantFloat 12s infinite ease-in-out;
-            font-size: clamp(80px, 15vw, 150px);
+            font-size: clamp(60px, 12vw, 120px);
         }
         @keyframes giantFloat {
-            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            50% { transform: translate(40px, -60px) rotate(15deg) scale(1.1); }
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(30px, -40px) rotate(10deg); }
         }
 
         /* --- HERO SECTION --- */
@@ -38,7 +39,14 @@
             justify-content: center; align-items: center; text-align: center;
             position: relative; z-index: 10;
         }
-        .gift-box { font-size: 140px; cursor: pointer; transition: 0.5s; }
+        .gift-box { 
+            font-size: 120px; cursor: pointer; 
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
 
         .main-title {
             font-family: 'Fredoka One', cursive;
@@ -48,88 +56,84 @@
         }
 
         /* --- STORY FEED --- */
-        #story-feed { display: none; padding: 40px 20px; position: relative; z-index: 5; }
+        #story-feed { display: none; padding: 40px 15px; position: relative; z-index: 5; }
         
-        .magic-controls { text-align: center; margin-bottom: 60px; }
+        .magic-controls { text-align: center; margin-bottom: 80px; }
         .magic-btn {
             background: white; color: var(--hot-pink); border: 3px solid var(--hot-pink);
             padding: 15px 30px; border-radius: 50px; font-weight: bold; cursor: pointer;
-            font-family: 'Fredoka One'; transition: 0.3s;
+            font-family: 'Fredoka One'; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .magic-btn:hover { background: var(--hot-pink); color: white; }
+        .magic-btn:hover { background: var(--hot-pink); color: white; transform: translateY(-3px); }
 
-        /* --- GRID SYSTEM WITH ADDED ROW SPACE --- */
+        /* --- GRID --- */
         .memory-grid {
-            display: grid; 
-            grid-template-columns: 1fr; 
-            row-gap: 80px; /* BIG SPACE BETWEEN ROWS */
-            max-width: 1200px; 
-            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px; max-width: 1200px; margin: 0 auto; padding: 20px;
         }
 
-        @media (min-width: 768px) {
-            .memory-grid { 
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-                column-gap: 40px;
-                row-gap: 100px; /* Space between rows on desktop */
-            }
-        }
-
-        /* --- BUBBLE WRAPPER --- */
+        /* --- BUBBLE & POLAROID --- */
         .bubble-wrapper {
-            perspective: 1000px; 
-            height: 420px;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            margin-bottom: 20px; /* Extra breathing room */
+            perspective: 1000px; height: 400px;
+            display: flex; justify-content: center; align-items: center;
         }
 
         .bubble {
-            width: 280px; height: 280px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), var(--bubble-pink));
-            border-radius: 50%; border: 2px solid rgba(255,255,255,0.4);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.1), inset -15px -15px 30px rgba(255,255,255,0.6);
+            width: 260px; height: 260px;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), var(--bubble-pink));
+            border-radius: 50%; border: 2px solid rgba(255,255,255,0.5);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1), inset -10px -10px 20px rgba(255,255,255,0.5);
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer; animation: float 5s infinite ease-in-out;
+            cursor: pointer; animation: float 6s infinite ease-in-out;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
 
-        /* --- POLAROID SCRAPBOOK CARD --- */
         .polaroid {
-            display: none; background: white; padding: 15px 15px 50px 15px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2); border-radius: 5px;
-            cursor: pointer; width: 100%; height: 100%; border: 1px solid #eee;
+            display: none; background: white; padding: 15px 15px 45px 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-radius: 2px;
+            cursor: pointer; width: 280px; height: 350px;
         }
 
-        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; }
+        .card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
         .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; }
         
-        .card-front img { width: 100%; height: 85%; object-fit: cover; border: 1px solid #ddd; }
-        .card-label { font-family: 'Dancing Script'; font-size: 1.8rem; text-align: center; margin-top: 15px; font-weight: bold; }
+        .card-front img { width: 100%; height: 260px; object-fit: cover; border: 1px solid #f0f0f0; }
+        .placeholder-img { 
+            height: 260px; background: #fff0f3; display: flex; 
+            align-items: center; justify-content: center; flex-direction: column; 
+            border: 1px dashed var(--hot-pink); 
+        }
+
+        .card-label { font-family: 'Dancing Script'; font-size: 1.6rem; text-align: center; margin-top: 15px; color: #444; }
 
         .card-back {
             background: var(--hot-pink); color: white; transform: rotateY(180deg);
             display: flex; align-items: center; justify-content: center;
             text-align: center; font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem; padding: 25px; border-radius: 5px;
+            font-size: 1.5rem; padding: 20px; border-radius: 5px;
         }
 
-        /* --- CAKE SMASH --- */
-        .cake-zone {
-            background: rgba(255,255,255,0.9); padding: 80px 20px; margin-top: 120px;
-            border-radius: 80px 80px 0 0; text-align: center; border-top: 5px solid var(--hot-pink);
+        /* --- WISH WALL --- */
+        .wish-wall { background: white; padding: 80px 20px; border-radius: 80px 80px 0 0; text-align: center; margin-top: 50px;}
+        .wish-input-container { max-width: 500px; margin: 0 auto 40px auto; background: var(--soft-white); padding: 30px; border-radius: 30px; }
+        .wish-input-container input, .wish-input-container textarea {
+            width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; font-family: 'Poppins';
         }
+        .wishes-display { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .wish-card { background: #fff; padding: 20px; border-radius: 15px; width: 250px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--hot-pink); text-align: left; }
+
+        /* --- CAKE ZONE --- */
+        .cake-zone { padding: 60px 20px; text-align: center; background: #fff0f3; }
 
         #music-btn {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 70px; height: 70px; border-radius: 50%;
-            background: var(--hot-pink); color: white; border: 4px solid white;
-            font-size: 30px; cursor: pointer; z-index: 1000; display: none;
+            position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px;
+            border-radius: 50%; background: var(--hot-pink); color: white; border: 3px solid white;
+            font-size: 24px; cursor: pointer; z-index: 1000; display: none;
         }
 
-        .pop-anim { animation: burst 0.3s forwards; }
-        @keyframes burst { 100% { transform: scale(1.5); opacity: 0; } }
+        .pop-anim { animation: burst 0.4s forwards; }
+        @keyframes burst { 0% { transform: scale(1); } 100% { transform: scale(0); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -137,8 +141,7 @@
     <div class="cartoon-giant" style="top:5%; left:5%;">🦄</div>
     <div class="cartoon-giant" style="top:60%; right:5%; animation-delay: 2s;">🧚‍♀️</div>
     <div class="cartoon-giant" style="top:30%; right:10%; animation-delay: 4s;">🎈</div>
-    <div class="cartoon-giant" style="bottom:5%; left:10%; animation-delay: 1s;">🧸</div>
-    <div class="cartoon-giant" style="top:10%; right:30%; animation-delay: 5s;">👑</div>
+    <div class="cartoon-giant" style="bottom:10%; left:8%; animation-delay: 1s;">🧸</div>
 
     <button id="music-btn" onclick="toggleMusic()">🎵</button>
     <audio id="bg-music" loop src="bday-music.mp3"></audio>
@@ -146,20 +149,31 @@
     <div class="hero" id="hero">
         <div class="gift-box" onclick="unlock()">🎁</div>
         <h1 class="main-title">NYRA'S WORLD</h1>
-        <p style="color:white; background:var(--hot-pink); padding:12px 35px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="unlock()">ENTER WONDERLAND</p>
+        <p style="color:white; background:var(--hot-pink); padding:12px 35px; border-radius:50px; font-weight:bold; cursor:pointer;" onclick="unlock()">OPEN YOUR GIFT</p>
     </div>
 
     <div id="story-feed">
         <div class="magic-controls">
-            <h1 class="main-title" style="font-size: 2.8rem;">Pop the Magic Bubbles 🫧</h1>
+            <h1 class="main-title" style="font-size: 2.5rem; text-shadow: 2px 2px 0px var(--hot-pink);">Pop the Magic Bubbles 🫧</h1>
             <button class="magic-btn" onclick="popAll()">✨ POP ALL MEMORIES</button>
         </div>
         
         <div class="memory-grid" id="grid"></div>
 
         <div class="cake-zone">
-            <h2 style="font-family: 'Fredoka One'; color: var(--hot-pink); font-size: 3rem;">Smash the Cake!</h2>
-            <div id="cake-display" style="font-size: 130px; cursor: pointer;" onclick="smash()">🎂</div>
+            <h2 style="font-family: 'Fredoka One'; color: var(--hot-pink); font-size: 2.5rem;">The Big Smash!</h2>
+            <div id="cake-display" style="font-size: 100px; cursor: pointer;" onclick="smash()">🎂</div>
+            <p style="font-family: 'Dancing Script'; font-size: 1.5rem;">(Tap to smash the cake!)</p>
+        </div>
+
+        <div class="wish-wall">
+            <h2 class="main-title" style="color: var(--hot-pink); text-shadow: none; font-size: 2.5rem;">Nyra's Wish Wall ✨</h2>
+            <div class="wish-input-container">
+                <input type="text" id="wish-name" placeholder="Your Name">
+                <textarea id="wish-text" rows="3" placeholder="Write a birthday wish for Nyra..."></textarea>
+                <button class="magic-btn" onclick="saveWish()">🌟 SEND WISH</button>
+            </div>
+            <div class="wishes-display" id="wishes-display"></div>
         </div>
     </div>
 
@@ -167,34 +181,13 @@
         const memories = [
             {t: "Arrival", m: "The day heaven sent us an angel. ✨"},
             {t: "Tiny Hands", m: "Wrapped around our hearts. 💖"},
-            {t: "Home Bound", m: "Our home finally felt complete. 🏠"},
             {t: "First Month", m: "Sweetest 30 days ever. 🌸"},
             {t: "First Smile", m: "Brightening every single day. ☀️"},
-            {t: "Dreamland", m: "Watching you sleep is peace. 🌙"},
             {t: "First Giggle", m: "The best music we've heard. 🎶"},
-            {t: "Bath Fun", m: "Splashing through life! 🛁"},
             {t: "First Tooth", m: "A tiny pearl for a princess. 🦷"},
-            {t: "Rolling Over", m: "Our little explorer is moving! 🤸‍♀️"},
             {t: "Crawling", m: "Chasing dreams on all fours. 👣"},
-            {t: "Peek-a-Boo", m: "Joy in the little things. 👀"},
-            {t: "First Food", m: "Messy face, full heart. 🍎"},
-            {t: "Standing", m: "Ready to run soon! 🦒"},
-            {t: "First Word", m: "Every sound is genius. 🗣️"},
-            {t: "Mommy’s Twin", m: "Grace and a beautiful heart. ❤️"},
-            {t: "Daddy’s Girl", m: "Wrapped around his finger. 👑"},
-            {t: "Morning Snuggles", m: "Best part of every day. 🧸"},
-            {t: "Family Joy", m: "The sparkle in our eyes. ✨"},
-            {t: "Fashionista", m: "Best dressed girl ever. 👗"},
-            {t: "1 Year Old", m: "365 days of true love. 🎂"},
-            {t: "Our Star", m: "Shining brighter than any star. 🌌"},
-            {t: "The Big Day", m: "Today is all about you, Nyra. 🎈"},
-            {t: "Innocence", m: "Wonder in your eyes forever. 👁️"},
-            {t: "The Gift", m: "You made us complete. 🎁"},
-            {t: "First Trip", m: "Exploring the world together. 🌍"},
-            {t: "Infinite Love", m: "Love you more than words. 💞"},
-            {t: "Growing Up", m: "You teach us to be better. 🌱"},
-            {t: "Kingdom", m: "You rule our hearts. 👸"},
-            {t: "Happy 1st!", m: "To the moon and back! ❤️"}
+            {t: "First Word", m: "Every sound you make is magic. 🗣️"},
+            {t: "1 Year Old", m: "365 days of pure love. 🎂"}
         ];
 
         function unlock() {
@@ -215,9 +208,9 @@
                         <div class="card-inner">
                             <div class="card-front">
                                 <img src="pic${i+1}.jpg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                <div style="display:none; height:85%; background:#fff0f3; align-items:center; justify-content:center; flex-direction:column; border:1px dashed var(--hot-pink);">
+                                <div class="placeholder-img" style="display:none;">
                                     <span style="font-size:40px;">💖</span>
-                                    <p style="font-size:0.8rem;">Photo Coming</p>
+                                    <p style="font-size:0.8rem; color:var(--hot-pink);">Memory Loaded</p>
                                 </div>
                                 <div class="card-label">${item.t}</div>
                             </div>
@@ -227,6 +220,7 @@
                 `;
                 grid.appendChild(wrapper);
             });
+            displayWishes();
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
 
@@ -234,20 +228,18 @@
             el.classList.add('pop-anim');
             const rect = el.getBoundingClientRect();
             confetti({
-                particleCount: 40, spread: 60,
-                origin: { x: (rect.left + rect.width/2) / window.innerWidth, y: (rect.top + rect.height/2) / window.innerHeight },
-                colors: ['#ff4d6d', '#ffffff', '#ffafbd']
+                particleCount: 30, origin: { x: (rect.left + rect.width/2) / window.innerWidth, y: (rect.top + rect.height/2) / window.innerHeight }
             });
             setTimeout(() => {
                 el.style.display = 'none';
                 el.nextElementSibling.style.display = 'block';
-            }, 300);
+            }, 350);
         }
 
         function popAll() {
             const bubbles = document.querySelectorAll('.bubble');
             bubbles.forEach((b, index) => {
-                setTimeout(() => pop(b), index * 100);
+                setTimeout(() => { if(b.style.display !== 'none') pop(b); }, index * 150);
             });
         }
 
@@ -260,8 +252,34 @@
         function smash() {
             const cake = document.getElementById('cake-display');
             cake.innerHTML = "💥🧁💥";
-            confetti({ particleCount: 300, spread: 100, origin: { y: 0.8 } });
-            setTimeout(() => { cake.innerHTML = "😋🍴"; }, 3000);
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.8 } });
+            setTimeout(() => { cake.innerHTML = "😋🍴"; }, 2500);
+        }
+
+        function saveWish() {
+            const name = document.getElementById('wish-name').value;
+            const text = document.getElementById('wish-text').value;
+            if (name && text) {
+                const wishes = JSON.parse(localStorage.getItem('nyraWishes') || '[]');
+                wishes.push({ name, text, date: new Date().toLocaleDateString() });
+                localStorage.setItem('nyraWishes', JSON.stringify(wishes));
+                document.getElementById('wish-name').value = '';
+                document.getElementById('wish-text').value = '';
+                displayWishes();
+                confetti({ particleCount: 50 });
+            }
+        }
+
+        function displayWishes() {
+            const display = document.getElementById('wishes-display');
+            const wishes = JSON.parse(localStorage.getItem('nyraWishes') || '[]');
+            display.innerHTML = wishes.map(w => `
+                <div class="wish-card">
+                    <b>From: ${w.name}</b>
+                    <p>${w.text}</p>
+                    <small>${w.date}</small>
+                </div>
+            `).join('');
         }
 
         function toggleMusic() {
