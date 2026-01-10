@@ -3,270 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nyra's First Orbit 🌟</title>
+    <title>Nyra's First Birthday | Jan 27, 2026</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pink-light: #ffdeeb;
+            --pink-light: #fff0f3;
+            --pink-mid: #ffb3c1;
             --pink-hot: #ff8fa3;
-            --glass: rgba(255, 255, 255, 0.25);
+            --glass: rgba(255, 255, 255, 0.4);
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background: radial-gradient(circle at center, #fff5f7 0%, #ffdeeb 100%);
+            margin: 0; padding: 0;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe5ec 100%);
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
-            height: 100vh;
+            color: #594e52;
+            scroll-behavior: smooth;
         }
 
-        /* Animated Bubbles Background */
-        .bg-blobs {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            filter: blur(40px);
-        }
-        .blob {
-            position: absolute;
-            background: var(--pink-hot);
-            border-radius: 50%;
-            opacity: 0.2;
-            animation: move 20s infinite alternate;
+        /* Coming Soon Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(100vw, 100vh); }
+        .coming-soon-placeholder {
+            width: 100%; height: 85%;
+            background: #ffe5ec;
+            border-radius: 20px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            border: 2px dashed var(--pink-hot);
+            animation: pulse 2s infinite ease-in-out;
         }
 
-        /* Hero Section */
+        /* Sparkle Trail Effect */
+        .sparkle {
+            position: fixed; pointer-events: none;
+            background: var(--pink-hot); width: 4px; height: 4px;
+            border-radius: 50%; z-index: 9999;
+            animation: sparkleAnim 1s linear forwards;
+        }
+        @keyframes sparkleAnim {
+            to { transform: translateY(50px) scale(0); opacity: 0; }
+        }
+
+        .decoration {
+            position: fixed; pointer-events: none; z-index: 0;
+            animation: floatAround 15s infinite ease-in-out;
+            opacity: 0.6; font-size: 2rem;
+        }
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(30px, 50px) rotate(10deg); }
+        }
+
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s ease;
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; background: white; z-index: 10;
         }
 
-        .floating-gift {
-            font-size: 100px;
-            cursor: pointer;
-            animation: bounce 2s infinite ease-in-out;
-            filter: drop-shadow(0 0 20px rgba(255,143,163,0.5));
+        .gift-container {
+            font-size: 120px; cursor: pointer;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 15px 15px rgba(255,143,163,0.4));
+        }
+        .gift-container:hover { transform: scale(1.15) rotate(5deg); }
+
+        #story-feed { display: none; padding: 60px 20px; }
+        
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem; color: var(--pink-hot);
+            margin-bottom: 10px;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px; max-width: 1200px; margin: 50px auto;
         }
 
-        /* The Magical Feed */
-        #story-feed {
-            display: none;
-            padding: 50px 20px;
-            perspective: 1000px;
-        }
-
-        .memory-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-        }
-
-        /* Innovative Photo Card */
-        .photo-card {
-            width: 280px;
-            height: 380px;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 30px;
-            padding: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            position: relative;
+        .card { perspective: 1000px; height: 420px; cursor: pointer; }
+        .card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
-
-        .photo-card:hover {
-            transform: scale(1.05) translateY(-10px) rotate(2deg);
-            box-shadow: 0 25px 50px rgba(255,143,163,0.3);
+        .card.flipped .card-inner { transform: rotateY(180deg); }
+        
+        .card-front, .card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 30px;
+            display: flex; flex-direction: column;
+            padding: 20px; box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(255,143,163,0.2);
+            border: 2px solid white;
+        }
+        .card-front { background: white; } /* Polaroid Look */
+        
+        .card-front img { 
+            width: 100%; height: 85%; object-fit: cover; 
+            border-radius: 10px; margin-bottom: 15px; 
+        }
+        
+        .card-back {
+            background: linear-gradient(135deg, #ff8fa3, #ffb3c1);
+            color: white; transform: rotateY(180deg);
+            justify-content: center; align-items: center; text-align: center;
         }
 
-        .photo-card img {
-            width: 100%;
-            height: 80%;
-            object-fit: cover;
-            border-radius: 20px;
-            pointer-events: none;
+        /* Countdown */
+        .countdown-section {
+            background: white; padding: 60px 20px; margin-top: 50px;
+            border-radius: 50px; box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
         }
-
-        /* Hidden Message Reveal */
-        .message-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--pink-hot);
-            border-radius: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            opacity: 0;
-            transform: rotateY(180deg);
-            transition: all 0.6s ease;
-            backface-visibility: hidden;
+        .timer-container { display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap; }
+        .timer-box {
+            background: var(--pink-light); padding: 20px; border-radius: 20px;
+            min-width: 90px; border: 2px solid var(--pink-mid);
         }
-
-        .photo-card.flipped .message-overlay {
-            opacity: 1;
-            transform: rotateY(0deg);
-        }
-
-        .photo-card.flipped .front-content {
-            opacity: 0;
-        }
-
-        /* Floating Cartoon Icons */
-        .float-icon {
-            position: fixed;
-            pointer-events: none;
-            z-index: 10;
-            font-size: 2rem;
-            animation: floatUp 10s linear infinite;
-        }
-
-        @keyframes floatUp {
-            from { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
+        .timer-box span { display: block; font-size: 2.2rem; font-weight: bold; color: var(--pink-hot); }
 
         #music-btn {
-            position: fixed; bottom: 30px; left: 30px;
-            background: white; border: none; width: 50px; height: 50px;
-            border-radius: 50%; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            cursor: pointer; z-index: 1000;
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: white; border: none; font-size: 24px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            cursor: pointer; z-index: 100; display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-blobs">
-        <div class="blob" style="width: 400px; height: 400px; top: -10%; left: -10%;"></div>
-        <div class="blob" style="width: 300px; height: 300px; bottom: 10%; right: 10%; animation-delay: -5s;"></div>
-    </div>
+    <div class="decoration" style="top:10%; left:10%;">🦄</div>
+    <div class="decoration" style="top:40%; right:15%;">👑</div>
+    <div class="decoration" style="bottom:20%; left:5%;">🌸</div>
+    <div class="decoration" style="bottom:10%; right:10%;">🧸</div>
 
     <button id="music-btn" onclick="toggleMusic()">🎵</button>
     <audio id="bg-music" loop src="bday-music.mp3"></audio>
 
     <div class="hero" id="hero">
-        <div class="floating-gift" onclick="initMagic()">🎁</div>
-        <h1 style="color: var(--pink-hot); font-size: 3rem; margin-top: 20px;">Open Nyra's Joy</h1>
-        <p style="color: #888;">Tap the gift to begin the magic</p>
+        <div class="gift-container" onclick="unlockMemories()">🎁</div>
+        <h1 class="main-title">Nyra's First Birthday</h1>
+        <p style="letter-spacing: 2px; color: #888;">JANUARY 27, 2026</p>
     </div>
 
     <div id="story-feed">
-        <h1 style="color: var(--pink-hot); font-size: 2.5rem; margin-bottom: 50px;">365 Days of Precious Nyra</h1>
-        <div class="memory-container" id="memory-container"></div>
+        <h1 class="main-title">365 Magical Days</h1>
+        <div class="memory-grid" id="grid"></div>
+
+        <div class="countdown-section">
+            <h2 style="color: var(--pink-hot);">🎂 Countdown to the Cake Smash! 🎂</h2>
+            <div class="timer-container">
+                <div class="timer-box"><span id="days">00</span><div class="timer-label">Days</div></div>
+                <div class="timer-box"><span id="hours">00</span><div class="timer-label">Hours</div></div>
+                <div class="timer-box"><span id="mins">00</span><div class="timer-label">Mins</div></div>
+                <div class="timer-box"><span id="secs">00</span><div class="timer-label">Secs</div></div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const captions = [
-            {t: "The First Breath", m: "The day you arrived, you brought heaven with you. 👼"},
-            {t: "Dreamland", m: "Watching you sleep is like watching a miracle. ✨"},
-            {t: "Tiny Hands", m: "Wrapped around our fingers, you hold our whole world. 💖"},
-            {t: "First Giggle", m: "A sound more beautiful than any music. 🎶"},
-            {t: "Peek-a-Boo!", m: "Your laughter is our favorite sunshine. ☀️"},
-            {t: "Little Explorer", m: "The world is big, but you are brave! 🌍"}
-            // Add up to 30...
+        const memories = [
+            {t: "The First Breath", m: "The day you arrived, you brought heaven with you."},
+            {t: "Tiny Hands", m: "You wrapped your fingers around ours and never let go."},
+            {t: "Coming Home", m: "Home finally felt complete with you in our arms."},
+            {t: "Late Nights", m: "Sleepy eyes were a small price for your magic."},
+            {t: "First Smile", m: "That tiny curve of your lips changed our world."},
+            {t: "Dreamland", m: "Watching you sleep is our favorite miracle."},
+            {t: "First Giggle", m: "The most beautiful music we've ever heard."},
+            {t: "Bath Time", m: "Splashing through life with so much joy!"},
+            {t: "First Tooth", m: "A tiny pearl for a tiny princess."},
+            {t: "Rolling Over", m: "One small roll, one giant leap for our hearts."},
+            {t: "On The Move", m: "The house became your kingdom to explore."},
+            {t: "Peek-a-Boo", m: "May you always find joy in the little things."},
+            {t: "First Food", m: "Messy face, full heart, and curious eyes."},
+            {t: "Standing Tall", m: "Soon you'll be running toward your dreams."},
+            {t: "First Word", m: "Every sound you make is genius to us."},
+            {t: "Mommy’s Twin", m: "You have her grace and her beautiful heart."},
+            {t: "Daddy’s Girl", m: "Wrapped around his finger since day one."},
+            {t: "Morning Snuggles", m: "The best part of every single day."},
+            {t: "Family Joy", m: "You are the sparkle in everyone's eyes."},
+            {t: "Little Fashionista", m: "The best dressed girl in the whole world."},
+            {t: "One Year Old", m: "365 days of learning what true love is."},
+            {t: "Our Little Star", m: "You shine brighter than any star in the sky."},
+            {t: "The Big Day", m: "Today is all about you, our sweet Nyra."},
+            {t: "Innocence", m: "Keep that wonder in your eyes forever."},
+            {t: "The Greatest Gift", m: "You made our family complete."},
+            {t: "First Trip", m: "Exploring the world, one step at a time."},
+            {t: "Infinite Love", m: "We love you more than words can say."},
+            {t: "Growing Up", m: "You teach us how to be better every day."},
+            {t: "Nyra’s Kingdom", m: "Small but mighty, you rule our hearts."},
+            {t: "Happy 1st Birthday", m: "To the moon and back, forever and ever!"}
         ];
 
-        function createFloatingIcons() {
-            const icons = ['✨', '🦄', '🎀', '🎈', '🍼', '🌸', '👑'];
-            setInterval(() => {
-                const icon = document.createElement('div');
-                icon.className = 'float-icon';
-                icon.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-                icon.style.left = Math.random() * 100 + 'vw';
-                icon.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                document.body.appendChild(icon);
-                setTimeout(() => icon.remove(), 10000);
-            }, 800);
-        }
+        const targetDate = new Date("January 27, 2026 00:00:00").getTime();
 
-        function initMagic() {
-            document.getElementById('hero').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('hero').style.display = 'none';
-                document.getElementById('story-feed').style.display = 'block';
-                generateCards();
-                createFloatingIcons();
-                startConfetti();
-            }, 1000);
-            
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff <= 0) return;
+            document.getElementById('days').innerText = Math.floor(diff / (86400000)).toString().padStart(2, '0');
+            document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+        }
+        setInterval(updateTimer, 1000);
+
+        function unlockMemories() {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('story-feed').style.display = 'block';
+            document.getElementById('music-btn').style.display = 'block';
             document.getElementById('bg-music').play();
-        }
-
-        function generateCards() {
-            const container = document.getElementById('memory-container');
-            for(let i = 1; i <= 30; i++) {
-                const data = captions[i-1] || {t: `Memory ${i}`, m: "You are the best thing that ever happened to us! ❤️"};
+            const grid = document.getElementById('grid');
+            
+            memories.forEach((item, i) => {
                 const card = document.createElement('div');
-                card.className = 'photo-card';
-                card.style.animationDelay = (i * 0.1) + 's';
-                
-                card.innerHTML = `
-                    <div class="front-content">
-                        <img src="pic${i}.jpg" onerror="this.src='https://via.placeholder.com/300/ff8fa3/ffffff?text=Baby+Nyra'">
-                        <h3 style="color: var(--pink-hot); margin-top:15px;">${data.t}</h3>
+                card.className = 'card';
+                card.innerHTML = `<div class="card-inner">
+                    <div class="card-front">
+                        <img src="pic${i+1}.jpg" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="coming-soon-placeholder" style="display:none;">
+                            <span style="font-size:30px;">📸</span>
+                            <p style="font-weight:bold; color:var(--pink-hot); margin-top:10px;">Coming Soon...</p>
+                        </div>
+                        <h3 style="font-family:'Dancing Script';">${item.t}</h3>
                     </div>
-                    <div class="message-overlay">
-                        <h3>Our Message</h3>
-                        <p>${data.m}</p>
-                        <div style="font-size: 40px;">💌</div>
-                    </div>
-                `;
-                
-                card.onclick = function() {
-                    this.classList.toggle('flipped');
-                };
-                
-                container.appendChild(card);
-            }
-        }
-
-        function startConfetti() {
-            var end = Date.now() + (15 * 1000);
-            (function frame() {
-                confetti({
-                    particleCount: 2,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ff8fa3', '#ffdeeb']
-                });
-                confetti({
-                    particleCount: 2,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ff8fa3', '#ffdeeb']
-                });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+                    <div class="card-back"><p class="msg-text">${item.m}</p></div>
+                </div>`;
+                card.onclick = function() { this.classList.toggle('flipped'); };
+                grid.appendChild(card);
+            });
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
         }
 
         function toggleMusic() {
             const m = document.getElementById('bg-music');
             m.paused ? m.play() : m.pause();
         }
+
+        document.addEventListener('mousemove', (e) => {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = e.pageX + 'px';
+            sparkle.style.top = e.pageY + 'px';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+        });
     </script>
 </body>
 </html>
