@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟365 Days of You 🌟| Happiest Birthday! Nyra...❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root { --primary: #a29bfe; --secondary: #fab1a0; }
+        body { margin: 0; padding: 0; background: #f8f7ff; font-family: sans-serif; text-align: center; }
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .gift-box { font-size: 100px; cursor: pointer; transition: 0.3s; }
+        .gift-box:hover { transform: scale(1.1); }
+        #story-feed { display: none; padding: 20px; }
+        .memory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+        .photo-card { background: white; padding: 10px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .photo-card img { width: 100%; border-radius: 10px; height: 250px; object-fit: cover; }
+        #music-btn { position: fixed; bottom: 20px; right: 20px; display: none; z-index: 100; cursor: pointer; border-radius: 50%; width: 50px; height: 50px; background: white; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+
+    <button id="music-btn" onclick="toggleMusic()">🎵</button>
+    <audio id="bg-music" loop src="bday-music.mp3"></audio>
+
+    <div class="hero" id="hero">
+        <div class="gift-box" onclick="reveal()">🎁</div>
+        <h1 style="color: var(--primary);">Tap the Gift!</h1>
+    </div>
+
+    <div id="story-feed">
+        <h1 style="color: var(--primary);">Happy 1st Birthday!</h1>
+        <div class="memory-grid" id="grid-container"></div>
+    </div>
+
+    <script>
+        const captions = ["Welcome Home!", "Tiny Smiles", "Month 1", "Growing Fast", "Sweet Dreams", "First Giggles", "Happy Days", "Exploring", "Little Star", "Big Love"];
+        // (Add more captions here to reach 30)
+
+        function reveal() {
+            console.log("Button clicked!"); // This helps us see if it's working
+            
+            // 1. Hide Gift, Show Feed
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('story-feed').style.display = 'block';
+            document.getElementById('music-btn').style.display = 'block';
+
+            // 2. Try to play music (Safe Mode)
+            const m = document.getElementById('bg-music');
+            m.play().catch(e => console.log("Music file not found or blocked. Skipping..."));
+
+            // 3. Generate Photos
+            const grid = document.getElementById('grid-container');
+            grid.innerHTML = ""; // Clear existing
+            for(let i = 1; i <= 30; i++) {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.innerHTML = `
+                    <img src="pic${i}.jpg" onerror="this.src='https://via.placeholder.com/300?text=Photo+Missing'">
+                    <p>${captions[i-1] || 'A sweet memory'}</p>
+                `;
+                grid.appendChild(card);
+            }
+
+            // 4. Try Confetti
+            if(typeof confetti === 'function') {
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        function toggleMusic() {
+            const m = document.getElementById('bg-music');
+            m.paused ? m.play() : m.pause();
+        }
+    </script>
+</body>
+</html>
