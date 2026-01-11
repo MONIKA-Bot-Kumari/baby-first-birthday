@@ -3,43 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nyra's Bubble Wonderland 🦄</title>
+    <title>Nyra's Birthday Wonderland 🦄</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #fdf2f4; --hot-pink: #ff4d6d; }
-        body { margin: 0; background-color: var(--bg-color); transition: background-color 0.8s ease; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        :root { --hot-pink: #ff4d6d; }
+        body { margin: 0; transition: background-color 0.8s ease; font-family: 'Poppins', sans-serif; overflow-x: hidden; background-color: #fdf2f4; }
 
-        /* --- HERO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(45deg, #ffafbd, #ffc3a0, #c9e4ff); background-size: 400% 400%; animation: gradientBG 10s infinite alternate; text-align: center; position: relative; }
-        @keyframes gradientBG { 0% {background-position: 0% 50%;} 100% {background-position: 100% 50%;} }
+        /* HERO PAGE */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(45deg, #ffafbd, #ffc3a0, #c9e4ff); background-size: 400% 400%; animation: grad 10s infinite alternate; text-align: center; position: relative; }
+        @keyframes grad { 0% {background-position: 0% 50%;} 100% {background-position: 100% 50%;} }
         .cartoon { font-size: 5rem; position: absolute; animation: floatIcon 4s infinite ease-in-out; pointer-events: none; }
-        @keyframes floatIcon { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(20deg); } }
+        @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
 
-        /* --- DASHBOARD --- */
+        /* DASHBOARD */
         #main-dashboard { display: none; padding: 20px; min-height: 100vh; }
-        .section-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 30px; position: sticky; top: 10px; z-index: 100; }
-        .nav-btn { background: white; border: none; padding: 15px; border-radius: 50px; cursor: pointer; font-family: 'Fredoka One'; color: var(--hot-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; }
-        .nav-btn.active { transform: scale(1.1); background: var(--hot-pink); color: white; }
+        .section-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 20px; position: sticky; top: 10px; z-index: 100; }
+        .nav-btn { background: white; border: none; padding: 15px; border-radius: 50px; cursor: pointer; font-family: 'Fredoka One'; color: var(--hot-pink); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .nav-btn.active { background: var(--hot-pink); color: white; transform: scale(1.1); }
 
-        /* --- BUBBLE AREA --- */
-        .bubble-area { position: relative; width: 100%; height: 75vh; overflow: hidden; border-radius: 30px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3); }
-        .photo-bubble { position: absolute; width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; animation: drift var(--d) infinite ease-in-out alternate; }
+        /* BUBBLES */
+        .bubble-area { position: relative; width: 100%; height: 75vh; overflow: hidden; border-radius: 30px; background: rgba(255,255,255,0.3); backdrop-filter: blur(5px); border: 2px solid white; }
+        .photo-bubble { position: absolute; width: 130px; height: 130px; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; animation: drift var(--d) infinite ease-in-out alternate; }
         .photo-bubble:hover { transform: scale(1.2) !important; z-index: 50; animation-play-state: paused; }
-        .photo-bubble img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-
+        .photo-bubble img { width: 100%; height: 100%; object-fit: cover; }
         @keyframes drift { from { transform: translate(0, 0); } to { transform: translate(var(--x), var(--y)); } }
 
-        /* --- FULL SCREEN OVERLAY --- */
-        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; cursor: zoom-out; animation: fadeIn 0.3s; }
-        #overlay img { max-width: 90%; max-height: 80%; border-radius: 15px; border: 5px solid white; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* MODAL / OVERLAY */
+        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: pointer; }
+        #overlay img { max-width: 90%; max-height: 85%; border: 5px solid white; border-radius: 10px; }
 
-        /* --- LOCK SCREEN --- */
-        .lock-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; border-radius: 30px; }
-        .pw-input { padding: 12px; border-radius: 20px; border: 2px solid var(--hot-pink); text-align: center; margin: 10px; outline: none; font-size: 1rem; }
+        /* LOCK SCREEN */
+        .lock-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; border-radius: 30px; }
+        .pw-input { padding: 12px; border-radius: 20px; border: 2px solid var(--hot-pink); text-align: center; margin-bottom: 10px; outline: none; }
 
-        .wish-container { max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .wish-container { max-width: 500px; margin: 30px auto; background: white; padding: 25px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -47,20 +45,15 @@
     <audio id="pop-sound" src="https://www.soundjay.com/buttons/sounds/button-37a.mp3"></audio>
     <audio id="bg-music" loop src="bday-music.mp3"></audio>
 
-    <div id="overlay" onclick="this.style.display='none'">
-        <img id="overlay-img" src="">
-        <p style="color:white; font-family:'Dancing Script'; font-size: 1.5rem; margin-top: 15px;">Tap anywhere to close</p>
-    </div>
+    <div id="overlay" onclick="this.style.display='none'"><img id="overlay-img" src=""></div>
 
     <div class="hero" id="hero">
-        <div class="cartoon" style="top: 10%; left: 10%;">🌈</div>
-        <div class="cartoon" style="top: 20%; right: 15%; animation-delay: 1s;">🦄</div>
-        <div class="cartoon" style="bottom: 15%; left: 20%; animation-delay: 2s;">🎈</div>
-        <div class="cartoon" style="bottom: 10%; right: 10%; animation-delay: 0.5s;">🧚‍♀️</div>
-        
-        <div style="font-size: 140px; cursor: pointer;" onclick="enterSite()">🎁</div>
-        <h1 class="main-title">NYRA'S WORLD</h1>
-        <p style="color: white; font-family: 'Fredoka One';">TAP THE GIFT TO ENTER</p>
+        <div class="cartoon" style="top:10%; left:10%;">🦄</div>
+        <div class="cartoon" style="top:20%; right:15%;">🌈</div>
+        <div class="cartoon" style="bottom:15%; left:20%;">🧚‍♀️</div>
+        <div style="font-size: 130px; cursor: pointer;" onclick="enterSite()">🎁</div>
+        <h1 style="font-family:'Fredoka One'; font-size:4rem; color:white; text-shadow:3px 3px var(--hot-pink);">NYRA'S WORLD</h1>
+        <p style="color:white; font-weight:bold;">CLICK THE GIFT TO ENTER</p>
     </div>
 
     <div id="main-dashboard">
@@ -76,7 +69,7 @@
                 <div class="lock-overlay" id="lock-nyra">
                     <h2>🔒 Nyra's Gallery</h2>
                     <input type="password" id="pw-nyra" class="pw-input" placeholder="Password">
-                    <button class="nav-btn" style="background:var(--hot-pink); color:white;" onclick="unlock('nyra', 'nyra2026')">Unlock</button>
+                    <button class="nav-btn" style="background:var(--hot-pink); color:white;" onclick="unlock('nyra', 'nyra2026', 25, 'nyra')">Unlock</button>
                 </div>
             </div>
         </div>
@@ -86,7 +79,7 @@
                 <div class="lock-overlay" id="lock-parents">
                     <h2>🔒 Parents Gallery</h2>
                     <input type="password" id="pw-parents" class="pw-input" placeholder="Password">
-                    <button class="nav-btn" style="background:#00bcd4; color:white;" onclick="unlock('parents', 'love')">Unlock</button>
+                    <button class="nav-btn" style="background:#00bcd4; color:white;" onclick="unlock('parents', 'love', 25, 'parent')">Unlock</button>
                 </div>
             </div>
         </div>
@@ -96,7 +89,7 @@
                 <div class="lock-overlay" id="lock-family">
                     <h2>🔒 Family Gallery</h2>
                     <input type="password" id="pw-family" class="pw-input" placeholder="Password">
-                    <button class="nav-btn" style="background:#9c27b0; color:white;" onclick="unlock('family', 'family123')">Unlock</button>
+                    <button class="nav-btn" style="background:#9c27b0; color:white;" onclick="unlock('family', 'family123', 25, 'family')">Unlock</button>
                 </div>
             </div>
         </div>
@@ -104,10 +97,10 @@
         <div id="guests" class="content-section">
             <div class="bubble-area" id="area-guests"></div>
             <div class="wish-container">
-                <h3 style="text-align:center; color: var(--hot-pink);">Leave a Wish</h3>
+                <h3 style="text-align:center; color:var(--hot-pink);">Leave a Wish</h3>
                 <input type="text" id="gName" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Name">
-                <textarea id="gMsg" style="width:100%; padding:10px;" rows="3" placeholder="Wish..."></textarea>
-                <button class="nav-btn" style="width:100%; margin-top:10px; background:var(--hot-pink); color:white;" onclick="saveWish()">🌟 SEND</button>
+                <textarea id="gMsg" style="width:100%; padding:10px;" rows="3" placeholder="Message..."></textarea>
+                <button class="nav-btn" style="width:100%; background:var(--hot-pink); color:white;" onclick="saveWish()">🌟 SEND</button>
             </div>
         </div>
     </div>
@@ -117,7 +110,7 @@
             document.getElementById('hero').style.display = 'none';
             document.getElementById('main-dashboard').style.display = 'block';
             document.getElementById('bg-music').play().catch(()=>{});
-            createBubbles('guests', 'guest', 20);
+            createBubbles('guests', 'guest', 20); // Guests always public
         }
 
         function showTab(id, color) {
@@ -128,24 +121,24 @@
             event.currentTarget.classList.add('active');
         }
 
-        function unlock(id, correct) {
+        function unlock(id, correct, count, prefix) {
             if(document.getElementById('pw-' + id).value === correct) {
                 document.getElementById('lock-' + id).style.display = 'none';
-                createBubbles(id, id === 'nyra' ? 'nyra' : (id === 'parents' ? 'parent' : 'family'), 25);
+                createBubbles(id, prefix, count);
                 confetti({particleCount: 100});
             } else { alert("Wrong password!"); }
         }
 
         function createBubbles(areaId, prefix, count) {
             const area = document.getElementById('area-' + areaId);
+            area.querySelectorAll('.photo-bubble').forEach(b => b.remove()); // Clear old bubbles
             for(let i=1; i<=count; i++) {
                 const b = document.createElement('div');
                 b.className = 'photo-bubble';
-                const x = Math.random() * 60 - 30 + 'vw';
-                const y = Math.random() * 40 - 20 + 'vh';
-                b.style.setProperty('--x', x); b.style.setProperty('--y', y);
-                b.style.setProperty('--d', (5 + Math.random() * 5) + 's');
-                b.style.left = (10 + Math.random() * 70) + '%';
+                b.style.setProperty('--x', (Math.random() * 60 - 30) + 'vw');
+                b.style.setProperty('--y', (Math.random() * 40 - 20) + 'vh');
+                b.style.setProperty('--d', (4 + Math.random() * 4) + 's');
+                b.style.left = (10 + Math.random() * 75) + '%';
                 b.style.top = (10 + Math.random() * 70) + '%';
                 b.style.animationDelay = (Math.random() * -5) + 's';
                 
@@ -162,12 +155,12 @@
         }
 
         function saveWish() {
-            const name = document.getElementById('gName').value;
-            const msg = document.getElementById('gMsg').value;
-            if(name && msg) {
-                let wishes = JSON.parse(localStorage.getItem('nyra_wishes') || '[]');
-                wishes.push({name, msg});
-                localStorage.setItem('nyra_wishes', JSON.stringify(wishes));
+            const n = document.getElementById('gName').value;
+            const m = document.getElementById('gMsg').value;
+            if(n && m) {
+                let w = JSON.parse(localStorage.getItem('nyra_wishes') || '[]');
+                w.push({name: n, msg: m});
+                localStorage.setItem('nyra_wishes', JSON.stringify(w));
                 alert("Wish sent privately!");
                 document.getElementById('gName').value = ''; document.getElementById('gMsg').value = '';
             }
