@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { --hot-pink: #eb548c; --text-dark: #333d47; }
-        body, html { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        body, html { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; overflow-x: hidden; background-color: #fdf4d7; transition: background-color 0.8s ease; }
 
         /* --- PAGE 1: WELCOME --- */
         .page-welcome {
@@ -16,78 +16,77 @@
             background: linear-gradient(135deg, #fdf4d7 0%, #fde2e4 50%, #fad0c4 100%);
             text-align: center; position: relative;
         }
-        .blob { position: absolute; border-radius: 50%; opacity: 0.6; filter: blur(20px); z-index: 1; }
-        
-        .welcome-title { font-family: 'Fredoka One', cursive; font-size: 4rem; color: var(--text-dark); z-index: 2; margin-bottom: 0; }
-        .nyra-highlight { font-size: 6rem; color: var(--hot-pink); display: block; margin-top: -10px; }
-        .welcome-sub { font-size: 1.2rem; color: #555; z-index: 2; margin: 20px 0; }
+        .blob { position: absolute; border-radius: 50%; opacity: 0.5; filter: blur(30px); z-index: 1; }
+        .welcome-content { z-index: 2; max-width: 800px; padding: 20px; }
+        .welcome-title { font-family: 'Fredoka One', cursive; font-size: 5rem; color: var(--text-dark); margin: 0; }
+        .nyra-highlight { font-size: 7rem; color: var(--hot-pink); display: block; margin-top: -10px; }
         .btn-celebrate {
-            background: var(--hot-pink); color: white; padding: 15px 40px; border-radius: 50px;
-            font-family: 'Fredoka One'; font-size: 1.2rem; border: none; cursor: pointer;
-            z-index: 2; transition: 0.3s; box-shadow: 0 10px 20px rgba(235, 84, 140, 0.3);
+            background: var(--hot-pink); color: white; padding: 18px 45px; border-radius: 50px;
+            font-family: 'Poppins'; font-weight: 600; font-size: 1.1rem; border: none; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 10px 20px rgba(235, 84, 140, 0.3);
         }
-        .btn-celebrate:hover { transform: scale(1.05); background: #d44376; }
 
-        /* --- PAGE 2: MEMORY LANE --- */
+        /* --- PAGE 2: CHOOSE LANE --- */
         #page-lane {
             display: none; height: 100vh; flex-direction: column; justify-content: center; align-items: center;
-            background-color: #fce1e4; text-align: center;
+            background-color: #fde2e4; text-align: center; padding: 20px;
         }
-        .lane-title { font-family: 'Fredoka One'; font-size: 3rem; color: var(--text-dark); margin-bottom: 10px; }
-        .lane-sub { color: var(--hot-pink); margin-bottom: 50px; font-weight: 600; }
-        
-        .bubble-nav { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+        .bubble-nav { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
         .nav-circle {
-            width: 180px; height: 180px; border-radius: 50%;
+            width: 200px; height: 200px; border-radius: 50%;
             background: linear-gradient(180deg, #4facfe 0%, #a486ff 100%);
             display: flex; justify-content: center; align-items: center;
-            color: white; font-family: 'Fredoka One'; font-size: 1.5rem;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            color: white; font-family: 'Fredoka One'; font-size: 1.8rem;
+            cursor: pointer; transition: 0.4s; box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
-        .nav-circle:hover { transform: translateY(-10px) scale(1.05); }
 
-        /* --- GALLERY SECTION --- */
-        #gallery-view { display: none; padding: 20px; min-height: 100vh; }
-        .back-btn { position: fixed; top: 20px; left: 20px; background: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; z-index: 200; }
-        
-        .bubble-container { position: relative; width: 100%; height: 80vh; overflow: hidden; border-radius: 40px; background: rgba(255,255,255,0.3); backdrop-filter: blur(5px); }
+        /* --- GALLERY VIEW --- */
+        #gallery-view { display: none; padding: 20px; min-height: 100vh; flex-direction: column; align-items: center; }
+        .bubble-container { position: relative; width: 95vw; height: 70vh; overflow: hidden; border-radius: 40px; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); border: 2px solid white; margin-top: 20px; }
         .photo-bubble {
             position: absolute; width: 140px; height: 140px; border-radius: 50%;
-            border: 4px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             overflow: hidden; cursor: pointer; animation: float var(--d) infinite ease-in-out alternate;
         }
         .photo-bubble img { width: 100%; height: 100%; object-fit: cover; }
         @keyframes float { from { transform: translate(0, 0); } to { transform: translate(var(--x), var(--y)); } }
 
-        /* LOCK OVERLAY */
-        .lock-screen { position: absolute; inset: 0; background: rgba(255,255,255,0.9); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 40px; }
-        .pw-input { padding: 12px; border-radius: 20px; border: 2px solid var(--hot-pink); margin: 10px; text-align: center; }
+        /* --- MUSIC BUTTON --- */
+        #mute-btn {
+            display: none; position: fixed; top: 20px; right: 20px; z-index: 3000;
+            background: white; border-radius: 50%; width: 50px; height: 50px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 1.5rem;
+        }
 
-        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; cursor: pointer; }
-        #overlay img { max-width: 90%; max-height: 80%; border: 5px solid white; border-radius: 10px; }
+        /* OVERLAYS */
+        .lock-screen { position: absolute; inset: 0; background: rgba(255,255,255,0.95); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 40px; }
+        .pw-input { padding: 15px; border-radius: 30px; border: 2px solid #ddd; width: 250px; text-align: center; margin-bottom: 10px; }
+        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center; align-items: center; }
+        #overlay img { max-width: 90%; max-height: 85%; border: 5px solid white; border-radius: 10px; }
     </style>
 </head>
 <body>
 
+    <audio id="bg-music" loop src="bday-music.mp3"></audio>
     <audio id="pop-sound" src="https://www.soundjay.com/buttons/sounds/button-37a.mp3"></audio>
 
+    <div id="mute-btn" onclick="toggleMute()">🔊</div>
     <div id="overlay" onclick="this.style.display='none'"><img id="overlay-img" src=""></div>
 
     <div class="page-welcome" id="page-welcome">
-        <div class="blob" style="width:200px; height:200px; background:#fef08a; top:10%; left:5%;"></div>
-        <div class="blob" style="width:150px; height:150px; background:#bfdbfe; top:20%; right:10%;"></div>
-        <div class="blob" style="width:250px; height:250px; background:#bbf7d0; bottom:15%; left:15%;"></div>
-        <div class="blob" style="width:180px; height:180px; background:#fecaca; bottom:10%; right:5%;"></div>
-
-        <h1 class="welcome-title">Welcome to <span class="nyra-highlight">Nyra's World</span></h1>
-        <p class="welcome-sub">A celebration of her first year of life, love, and laughter.</p>
-        <button class="btn-celebrate" onclick="goToLane()">Let's Celebrate ❤</button>
+        <div class="blob" style="width:300px; height:300px; background:#fef08a; top:5%; left:-5%;"></div>
+        <div class="blob" style="width:350px; height:350px; background:#bbf7d0; bottom:10%; left:10%;"></div>
+        <div class="welcome-content">
+            <h1 class="welcome-title">Welcome to <span class="nyra-highlight">Nyra's World</span></h1>
+            <p style="font-size: 1.3rem; color: #555; margin: 30px 0;">A celebration of her first year of life, love, and laughter.</p>
+            <button class="btn-celebrate" onclick="startExperience()">Let's Celebrate ❤</button>
+        </div>
     </div>
 
     <div id="page-lane">
-        <h1 class="lane-title">Choose a Memory Lane</h1>
-        <p class="lane-sub">Click a bubble to explore</p>
-        
+        <h1 style="font-family:'Fredoka One'; font-size:3.5rem; color:var(--text-dark);">Choose a Memory Lane</h1>
+        <p style="color:var(--hot-pink); font-weight:600; margin-bottom:40px;">Click a bubble to explore</p>
         <div class="bubble-nav">
             <div class="nav-circle" onclick="openGallery('nyra', '#fff0f3', 'nyra2026', 25, 'nyra')">Nyra</div>
             <div class="nav-circle" onclick="openGallery('parents', '#e0f7fa', 'love', 25, 'parent')">Parents</div>
@@ -97,42 +96,55 @@
     </div>
 
     <div id="gallery-view">
-        <button class="back-btn" onclick="backToLane()">← Back</button>
-        <div class="bubble-container" id="gallery-box">
+        <button class="btn-celebrate" style="padding: 10px 25px; margin-bottom:10px;" onclick="backToLane()">← Back</button>
+        <div class="bubble-container">
             <div id="lock-screen" class="lock-screen" style="display:none;">
-                <h2 id="lock-title">🔒 Private Section</h2>
-                <input type="password" id="pw-field" class="pw-input" placeholder="Enter Password">
+                <h2 style="font-family:'Fredoka One';">🔒 Locked</h2>
+                <input type="password" id="pw-field" class="pw-input" placeholder="Password">
                 <button class="btn-celebrate" id="unlock-btn">Unlock</button>
             </div>
-            <div id="bubble-wrap" style="width:100%; height:100%;"></div>
+            <div id="bubble-wrap" style="width:100%; height:100%; position:relative;"></div>
         </div>
     </div>
 
     <script>
-        let currentSection = {};
+        const music = document.getElementById('bg-music');
 
-        function goToLane() {
+        function startExperience() {
+            music.play().catch(() => console.log("Audio waiting for interaction..."));
+            document.getElementById('mute-btn').style.display = 'flex';
             document.getElementById('page-welcome').style.display = 'none';
             document.getElementById('page-lane').style.display = 'flex';
+        }
+
+        function toggleMute() {
+            const btn = document.getElementById('mute-btn');
+            if (music.muted) {
+                music.muted = false;
+                btn.innerText = "🔊";
+            } else {
+                music.muted = true;
+                btn.innerText = "🔇";
+            }
         }
 
         function backToLane() {
             document.getElementById('gallery-view').style.display = 'none';
             document.getElementById('page-lane').style.display = 'flex';
+            document.body.style.backgroundColor = '#fde2e4';
         }
 
         function openGallery(id, color, pass, count, prefix) {
             document.getElementById('page-lane').style.display = 'none';
-            document.getElementById('gallery-view').style.display = 'block';
+            document.getElementById('gallery-view').style.display = 'flex';
             document.body.style.backgroundColor = color;
-            
             const lock = document.getElementById('lock-screen');
             const wrap = document.getElementById('bubble-wrap');
             wrap.innerHTML = ''; 
             
             if (pass !== '') {
                 lock.style.display = 'flex';
-                document.getElementById('lock-title').innerText = `🔒 ${id.charAt(0).toUpperCase() + id.slice(1)}'s Gallery`;
+                document.getElementById('pw-field').value = '';
                 document.getElementById('unlock-btn').onclick = function() {
                     if(document.getElementById('pw-field').value === pass) {
                         lock.style.display = 'none';
@@ -150,16 +162,13 @@
             for(let i=1; i<=count; i++) {
                 const b = document.createElement('div');
                 b.className = 'photo-bubble';
-                b.style.setProperty('--x', (Math.random() * 50 - 25) + 'vw');
-                b.style.setProperty('--y', (Math.random() * 40 - 20) + 'vh');
-                b.style.setProperty('--d', (4 + Math.random() * 4) + 's');
+                b.style.setProperty('--x', (Math.random() * 40 - 20) + 'vw');
+                b.style.setProperty('--y', (Math.random() * 30 - 15) + 'vh');
+                b.style.setProperty('--d', (4 + Math.random() * 3) + 's');
                 b.style.left = (15 + Math.random() * 70) + '%';
                 b.style.top = (15 + Math.random() * 60) + '%';
-                b.style.animationDelay = (Math.random() * -5) + 's';
-                
                 const imgSrc = `${prefix}${i}.jpg`;
                 b.innerHTML = `<img src="${imgSrc}" onerror="this.src='https://via.placeholder.com/150/eb548c/ffffff?text=${i}'">`;
-                
                 b.onclick = function() {
                     document.getElementById('pop-sound').play();
                     document.getElementById('overlay-img').src = imgSrc;
